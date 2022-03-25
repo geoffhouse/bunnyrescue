@@ -1,0 +1,69 @@
+{
+    "name": "bunnyrescue-client",
+    "version": "2.0.0",
+    "private": true,
+    "proxy": "http://localhost:4100/",
+    "dependencies": {
+        "@blackbox-vision/react-qr-reader": "^5.0.0",
+        "@emotion/react": "^11.8.2",
+        "@emotion/styled": "^11.8.1",
+        "@mui/icons-material": "^5.5.1",
+        "@mui/material": "^5.5.1",
+        "@mui/styles": "^5.5.1",
+        "@react-pdf/renderer": "^2.1.1",
+        "@testing-library/jest-dom": "^5.16.2",
+        "@testing-library/react": "^12.1.4",
+        "@testing-library/user-event": "^13.5.0",
+        "ajv": "^8.10.0",
+        "axios": "^0.26.1",
+        "buffer": "^6.0.3",
+        "d3": "^7.3.0",
+        "delay": "^5.0.0",
+        "javascript-time-ago": "^2.3.13",
+        "js-cookie": "^3.0.1",
+        "leaflet": "^1.7.1",
+        "leaflet.locatecontrol": "^0.76.0",
+        "mui-image": "^1.0.4",
+        "notistack": "^2.0.3",
+        "ordinal": "^1.0.3",
+        "qrcode": "^1.5.0",
+        "react": "^17.0.2",
+        "react-circular-progressbar": "^2.0.4",
+        "react-color": "^2.19.3",
+        "react-cookie": "^4.1.1",
+        "react-device-detect": "^2.1.2",
+        "react-dom": "^17.0.2",
+        "react-geolocated": "^3.2.0",
+        "react-leaflet": "^3.2.5",
+        "react-leaflet-div-icon": "^1.1.0",
+        "react-leaflet-enhanced-marker": "^1.0.21",
+        "react-router-dom": "^5.3.0",
+        "react-scripts": "^4.0.3",
+        "stream": "^0.0.2",
+        "timeago-react": "^3.0.4",
+        "typescript": "^4.6.2",
+        "util": "^0.12.4",
+        "web-vitals": "^2.1.4",
+        "zlib": "^1.0.5"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+    ],
+    "devDependencies": {
+        "react-error-overlay": "^6.0.9"
+    }
+}

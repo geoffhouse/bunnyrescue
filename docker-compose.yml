@@ -1,0 +1,44 @@
+version: "2.0"
+
+networks:
+    bunnyrescue:
+        name: bunnyrescue
+        driver: bridge
+
+services:
+    app:
+        container_name: bunnyrescue
+        build: "./src"
+        restart: always
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ./src:/home/node/bunnyrescue
+        environment:
+            LOGFOLDER: ${LOGFOLDER}
+            LOGNAME: ${LOGNAME}
+            CONSOLE_LOGLEVEL: ${CONSOLE_LOGLEVEL}
+            API_PORT: ${API_PORT}
+            ENVIRONMENT: ${ENVIRONMENT}
+            SENDGRID_APIKEY: ${SENDGRID_APIKEY}
+            FROM_EMAIL: ${FROM_EMAIL}
+            HOME_LAT: ${HOME_LAT}
+            HOME_LONG: ${HOME_LONG}
+            SERVER_NAME: ${SERVER_NAME}
+            SERVER_URL: ${SERVER_URL}
+            PRIZE_LEVEL: ${PRIZE_LEVEL}
+            START_TIME: ${START_TIME}
+            END_TIME: ${END_TIME}
+            ADMIN_EMAIL: ${ADMIN_EMAIL}
+        networks:
+            - bunnyrescue
+        ports:
+            - 4100:4100
+            - 80:3000
+    mongo:
+        image: mongo:latest
+        restart: unless-stopped
+        container_name: bunnyrescue-mongo
+        networks:
+            - bunnyrescue
+        ports:
+            - 27017:27017

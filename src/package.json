@@ -1,0 +1,51 @@
+{
+    "name": "bunnyrescue",
+    "version": "2.0.0",
+    "description": "Bunny Rescue",
+    "scripts": {
+        "production": "node bin/server-prod",
+        "development": "concurrently \"nodemon ./bin/server-dev.js\" \"cd client && npm run start\"",
+        "test": "jest --forceExit --detectOpenHandles --maxWorkers=1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/geoffhouse/bunnyrescue"
+    },
+    "author": "Geoff House",
+    "license": "GPLv3",
+    "bugs": {
+        "url": "https://github.com/geoffhouse/bunnyrescue/issues"
+    },
+    "dependencies": {
+        "@sendgrid/mail": "^7.6.2",
+        "body-parser": "^1.19.0",
+        "concurrently": "^6.0.0",
+        "cookie-parser": "^1.4.5",
+        "delay": "^5.0.0",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "express-async-handler": "^1.2.0",
+        "express-useragent": "^1.0.15",
+        "md5": "^2.3.0",
+        "module-alias": "^2.2.2",
+        "mongoose": "^5.11.17",
+        "morgan": "^1.10.0",
+        "nanoid-good": "^3.1.0",
+        "node-prowl": "^0.1.8",
+        "node-pushover": "^1.0.0",
+        "rotating-file-stream": "^2.1.5",
+        "winston": "^3.3.3",
+        "winston-daily-rotate-file": "^4.5.0"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.15"
+    },
+    "_moduleAliases": {
+        "@bin": "./bin/",
+        "@root": "./",
+        "@routes": "./routes/",
+        "@services": "./services/",
+        "@components": "./components/",
+        "@middleware": "./middleware/"
+    }
+}
