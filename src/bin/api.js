@@ -22,7 +22,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, "public")));
 app.use(useragent.express());
 
 // setup the logger
@@ -36,6 +35,24 @@ app.use(morgan("combined", { stream: accessLogStream }));
 app.use("/api/user", userRouter);
 app.use("/api/bunny", bunnyRouter);
 app.use("/api/server", serverRouter);
+
+// get environment
+const nodeEnv = process.env.NODE_ENV || "production";
+
+if (nodeEnv === "production") {
+    const root = require("path").join(__dirname, "..", "client", "build");
+
+    // production: include react build static client files
+    app.use(express.static(root));
+
+    // production: serve react frontend on the default route
+    app.get("*", (req, res) => {
+        res.sendFile("index.html", { root });
+    });
+} else {
+    // development: serve files in the public folder
+    app.use(express.static(path.join(__dirname, "public")));
+}
 
 // error handler
 app.use(function (err, req, res, next) {

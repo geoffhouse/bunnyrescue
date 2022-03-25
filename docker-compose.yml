@@ -16,7 +16,6 @@ services:
             LOGFOLDER: ${LOGFOLDER}
             LOGNAME: ${LOGNAME}
             CONSOLE_LOGLEVEL: ${CONSOLE_LOGLEVEL}
-            API_PORT: ${API_PORT}
             ENVIRONMENT: ${ENVIRONMENT}
             SENDGRID_APIKEY: ${SENDGRID_APIKEY}
             FROM_EMAIL: ${FROM_EMAIL}
@@ -32,7 +31,7 @@ services:
             - bunnyrescue
         ports:
             - 4100:4100
-            - 80:3000
+            - 3000:3000
     mongo:
         image: mongo:latest
         restart: unless-stopped

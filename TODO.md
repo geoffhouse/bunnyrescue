@@ -9,3 +9,5 @@ check privacy
 re-enable error messages (hide code paths etc)
 admin - show user's finds in table?
 remove Logger (use console.log)
+send email to welcome people
+make register new user/name second field and optional

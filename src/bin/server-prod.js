@@ -1,33 +1,53 @@
 #!/usr/bin/env node
 
-const express = require("express");
-const path = require("path");
+const app = require("./api");
+const debug = require("debug")("server:server");
+const http = require("http");
 const mongoDb = require("@services/mongo-db");
+const { RejectionHandler } = require("winston");
+const port = "3000";
+app.set("port", port);
+
+const server = http.createServer(app);
 
 const serve = async () => {
     try {
         await mongoDb.connect("bunnyrescue");
 
-        // import the API logic
-        const app = require("@bin/api");
-
-        // set the port from the .env file
-        const port = process.env.API_PORT || "4100";
-        app.set("port", port);
-
-        // include react static client files
-        app.use(express.static(path.join(__dirname, "../client/build")));
-
-        // serve React application
-        app.get("*", function (req, res) {
-            res.sendFile(path.join(__dirname, "../client/build", "index.html"));
-        });
-
-        // and start it up
-        app.listen(port, () => console.log(`Listening on port ${port}`));
+        server.on("error", onError);
+        server.on("listening", onListening);
+        server.listen(port);
     } catch (error) {
         throw error;
     }
 };
+
+function onError(error) {
+    if (error.syscall !== "listen") {
+        throw error;
+    }
+
+    const bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
+
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+        case "EACCES":
+            console.error(bind + " requires elevated privileges");
+            process.exit(1);
+            break;
+        case "EADDRINUSE":
+            console.error(bind + " is already in use");
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
+}
+
+function onListening() {
+    const addr = server.address();
+    const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+    console.info("Listening on " + bind);
+}
 
 serve();

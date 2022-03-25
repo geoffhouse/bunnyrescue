@@ -1,15 +1,14 @@
 #!/usr/bin/env node
 
-const api = require("./api");
+const app = require("./api");
 const debug = require("debug")("server:server");
 const http = require("http");
 const mongoDb = require("@services/mongo-db");
 const { RejectionHandler } = require("winston");
+const port = "4100";
+app.set("port", "4100");
 
-const port = process.env.API_PORT || "4100";
-api.set("port", port);
-
-const server = http.createServer(api);
+const server = http.createServer(app);
 
 const serve = async () => {
     try {
