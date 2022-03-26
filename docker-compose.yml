@@ -10,7 +10,6 @@ services:
         build: "./src"
         restart: always
         volumes:
-            - /var/run/docker.sock:/var/run/docker.sock
             - ./src:/home/node/bunnyrescue
         environment:
             LOGFOLDER: ${LOGFOLDER}
