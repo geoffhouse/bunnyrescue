@@ -18,7 +18,11 @@ export default function PageFaq() {
                 scrollable
             >
                 <>
+                    <h3>Point your phone at the Bunny code and wait for it to scan ...</h3>
                     <QrReader
+                        constraints={{
+                            facingMode: "environment",
+                        }}
                         onResult={(result, error) => {
                             if (!!result) {
                                 setData(result?.text);
