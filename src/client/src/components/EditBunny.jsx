@@ -90,7 +90,7 @@ export default function EditBunny({ isSaving = false, bunny, onSave, colour }) {
 
             <ColourPicker value={localBunny.colour} onChange={handleColourPickerChanged} />
 
-            <StyledP>Add an optional mBunny to be shown when the bunny is rescued</StyledP>
+            <StyledP>Add an optional message to be shown when the bunny is rescued</StyledP>
 
             <form noValidate autoComplete="off">
                 <TextField
