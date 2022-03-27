@@ -38,16 +38,19 @@ export default function PdfDocument({ size, qrcode, bunnyName }) {
             position: "absolute",
             width: "50%",
             height: "50%",
+            zIndex: 999,
         },
         bunnyMedium: {
             position: "absolute",
             width: "71%",
             height: "71%",
+            zIndex: 999,
         },
         bunnyLarge: {
             position: "absolute",
             width: "100%",
             height: "100%",
+            zIndex: 999,
         },
     });
 
