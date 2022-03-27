@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navigation from "./Navigation";
 import BackBar from "./BackBar";
 import ContentWrapper from "./ContentWrapper";
 import { QrReader } from "@blackbox-vision/react-qr-reader";
+import { useHistory } from "react-router-dom";
 
-export default function PageFaq() {
-    const [data, setData] = React.useState("No result");
+export default function PageScanBunny({ serverurl }) {
+    const [data, setData] = React.useState();
+    const history = useHistory();
+
+    useEffect(() => {
+        if (data && data.indexOf(`${serverurl}/find/`) === 0) {
+            // it's a match
+            const bunnyId = data.replace(`${serverurl}/find/`, "");
+            history.push(`/find/${encodeURIComponent(bunnyId)}`);
+        }
+    }, [data, history, serverurl]);
 
     return (
         <>
@@ -18,7 +28,7 @@ export default function PageFaq() {
                 scrollable
             >
                 <>
-                    <h3>Point your phone at the Bunny code and wait for it to scan ...</h3>
+                    <>Point your phone at the Bunny code and wait for it to scan ...</>
                     <QrReader
                         constraints={{
                             facingMode: "environment",
@@ -27,14 +37,9 @@ export default function PageFaq() {
                             if (!!result) {
                                 setData(result?.text);
                             }
-
-                            if (!!error) {
-                                console.info(error);
-                            }
                         }}
                         style={{ width: "100%" }}
                     />
-                    <p>{data}</p>
                 </>
             </ContentWrapper>
             <Navigation></Navigation>

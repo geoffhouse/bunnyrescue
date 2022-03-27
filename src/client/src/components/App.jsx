@@ -77,6 +77,7 @@ export default function App() {
             setServer({
                 serverlocation: [result.data.lat, result.data.lng],
                 servername: result.data.name,
+                serverurl: result.data.url,
                 serverprize: result.data.prize,
                 times: {
                     start: result.data.startTime,
@@ -205,6 +206,7 @@ export default function App() {
                                     user={user}
                                     servername={server.servername}
                                     serverlocation={server.serverlocation}
+                                    serverurl={server.serverurl}
                                     times={server.times}
                                 />
                             </Route>
