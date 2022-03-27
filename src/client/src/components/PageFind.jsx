@@ -248,5 +248,22 @@ export default function PageFind({ times }) {
             );
         }
     }
-    return <> </>;
+
+    return (
+        <Page>
+            <RescueText>Sorry - there was a problem.</RescueText>
+            <SmallBunny variant="natural" />
+            <Box sx={{ textAlign: "center", fontSize: "15px", margin: "1rem" }}>
+                Either the bunny has been deleted, disabled or the QR code wasn't scanned correctly.
+            </Box>
+
+            <Action>
+                <BunnyLink to="/">
+                    <Button color="secondary" variant="contained">
+                        Home
+                    </Button>
+                </BunnyLink>
+            </Action>
+        </Page>
+    );
 }
