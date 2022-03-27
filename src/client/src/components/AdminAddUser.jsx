@@ -50,21 +50,7 @@ export default function AddUser({ isSaving = false, user, onSave }) {
     return (
         <>
             <form noValidate autoComplete="off">
-                <StyledP sx={{ marginTop: "12px" }}>
-                    The team/user name.
-                    <br /> If you leave this blank the user will need to set their name when they first log in.
-                </StyledP>
-                <TextField
-                    fullWidth
-                    disabled={localUser.name === "admin"}
-                    variant="filled"
-                    value={localUser.name}
-                    onChange={(event) => setLocalUser({ ...localUser, name: event.target.value })}
-                    label="User name"
-                    inputProps={{ maxLength: 40 }}
-                />
-
-                <StyledP>The email address which the new user will register with</StyledP>
+                <StyledP sx={{ marginTop: "12px" }}>The email address which the new user will register with</StyledP>
                 <TextField
                     fullWidth
                     disabled={localUser.name === "admin"}
@@ -78,7 +64,25 @@ export default function AddUser({ isSaving = false, user, onSave }) {
                     type="email"
                 />
 
-                <StyledP sx={{ marginBottom: "4px" }}>Disabling the user will prevent them from logging in</StyledP>
+                <StyledP>
+                    Usually leave this blank.
+                    <br />
+                    The user will then need to set their name when they first log in.
+                </StyledP>
+                <TextField
+                    fullWidth
+                    disabled={localUser.name === "admin"}
+                    variant="filled"
+                    value={localUser.name}
+                    onChange={(event) => setLocalUser({ ...localUser, name: event.target.value })}
+                    label="Team/user name"
+                    inputProps={{ maxLength: 40 }}
+                />
+
+                <StyledP sx={{ marginBottom: "4px" }}>
+                    Disabling the user will prevent them from logging in <br />
+                    (not recommended)
+                </StyledP>
                 <FormGroup row>
                     <FormControlLabel
                         control={
