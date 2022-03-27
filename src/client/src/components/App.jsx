@@ -214,6 +214,7 @@ export default function App() {
                                 <PageEditBunny
                                     user={user}
                                     servername={server.servername}
+                                    serverurl={server.serverurl}
                                     serverlocation={server.serverlocation}
                                     times={server.times}
                                 />
@@ -230,6 +231,7 @@ export default function App() {
                             <Route exact path="/addbunny">
                                 <PageAddBunny
                                     user={user}
+                                    serverurl={server.serverurl}
                                     servername={server.servername}
                                     serverlocation={server.serverlocation}
                                     times={server.times}
@@ -239,6 +241,7 @@ export default function App() {
                                 <Route exact path="/admin/addbunny">
                                     <PageAdminAddBunny
                                         user={user}
+                                        serverurl={server.serverurl}
                                         servername={server.servername}
                                         serverlocation={server.serverlocation}
                                         times={server.times}
@@ -269,6 +272,7 @@ export default function App() {
                                 <Route exact path="/admin/bunny/:bunnyid">
                                     <PageAdminEditBunny
                                         user={user}
+                                        serverurl={server.serverurl}
                                         servername={server.servername}
                                         serverlocation={server.serverlocation}
                                         times={server.times}

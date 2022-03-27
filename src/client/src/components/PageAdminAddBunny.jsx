@@ -11,7 +11,7 @@ import { useHistory } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import FetchGet from "../services/FetchGet";
 
-export default function PageAddBunny({ user, servername, serverlocation, times }) {
+export default function PageAdminAddBunny({ user, serverurl, servername, serverlocation, times }) {
     const history = useHistory();
     const [step, setStep] = React.useState(0);
     const [isCreating, setIsCreating] = React.useState(false);
@@ -122,6 +122,7 @@ export default function PageAddBunny({ user, servername, serverlocation, times }
                 )}
                 {step === 3 && (
                     <BunnyPrint
+                        serverurl={serverurl}
                         onNextClicked={handleFinishClicked}
                         bunnyId={bunny.bunnyId}
                         colour={bunny.colour}

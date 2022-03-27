@@ -17,12 +17,12 @@ const DownloadButton = styled(PDFDownloadLink)(({ theme }) => ({
     display: "inline-block",
 }));
 
-export default function BunnyPrint({ bunnyId, colour, name, onNextClicked }) {
+export default function BunnyPrint({ serverurl, bunnyId, colour, name, onNextClicked }) {
     const [qrCode, setQrCode] = React.useState(null);
 
     React.useEffect(() => {
         const getQrCode = async () => {
-            const text = "https://bunnyrescue.fotjs.org.uk/find/" + encodeURIComponent(bunnyId);
+            const text = `${serverurl}/find/${encodeURIComponent(bunnyId)}`;
             try {
                 const result = await QRCode.toDataURL(text);
                 setQrCode(result);
@@ -32,7 +32,7 @@ export default function BunnyPrint({ bunnyId, colour, name, onNextClicked }) {
         };
 
         getQrCode();
-    }, [bunnyId]);
+    }, [bunnyId, serverurl]);
 
     if (!qrCode) {
         return <Loading sx={{ marginTop: "2rem" }} />;

@@ -19,14 +19,14 @@ const StyledP = styled("p")(({ theme }) => ({
     color: "#606060",
 }));
 
-export default function EditBunny({ isSaving = false, bunny, onSave, colour }) {
+export default function AdminEditBunny({ serverurl, isSaving = false, bunny, onSave, colour }) {
     const [qrCode, setQrCode] = React.useState(null);
     const [localBunny, setLocalBunny] = React.useState(bunny);
     const [users, setUsers] = React.useState([]);
 
     React.useEffect(() => {
         const getQrCode = async () => {
-            const text = `https://bunnyrescue.fotjs.org.uk/find/${encodeURIComponent(localBunny._id)}`;
+            const text = `${serverurl}/find/${encodeURIComponent(localBunny._id)}`;
             try {
                 const result = await QRCode.toDataURL(text);
                 setQrCode(result);
@@ -36,7 +36,7 @@ export default function EditBunny({ isSaving = false, bunny, onSave, colour }) {
         };
 
         getQrCode();
-    }, [localBunny]);
+    }, [localBunny, serverurl]);
 
     React.useEffect(() => {
         const getUsers = async () => {

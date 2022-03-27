@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useSnackbar } from "notistack";
 
-export default function PageEditBunny({ times, serverlocation }) {
+export default function PageEditBunny({ times, serverlocation, serverurl }) {
     const history = useHistory();
     const params = useParams();
     const [bunny, setBunny] = React.useState(null);
@@ -71,7 +71,13 @@ export default function PageEditBunny({ times, serverlocation }) {
             return <Loading sx={{ marginTop: "2rem" }} />;
         }
         return (
-            <AdminEditBunny isSaving={isSaving} bunny={bunny.data} serverlocation={serverlocation} onSave={saveBunny} />
+            <AdminEditBunny
+                serverurl={serverurl}
+                isSaving={isSaving}
+                bunny={bunny.data}
+                serverlocation={serverlocation}
+                onSave={saveBunny}
+            />
         );
     };
 

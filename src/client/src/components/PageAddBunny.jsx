@@ -9,7 +9,7 @@ import ContentWrapper from "./ContentWrapper";
 import { useHistory } from "react-router-dom";
 import { useSnackbar } from "notistack";
 
-export default function PageAddBunny({ user, servername, serverlocation, times }) {
+export default function PageAddBunny({ user, serverurl, servername, serverlocation, times }) {
     const history = useHistory();
     const [step, setStep] = React.useState(0);
     const [isCreating, setIsCreating] = React.useState(false);
@@ -104,6 +104,7 @@ export default function PageAddBunny({ user, servername, serverlocation, times }
                 )}
                 {step === 2 && (
                     <BunnyPrint
+                        serverurl={serverurl}
                         onNextClicked={handleFinishClicked}
                         bunnyId={bunny.bunnyId}
                         colour={bunny.colour}
