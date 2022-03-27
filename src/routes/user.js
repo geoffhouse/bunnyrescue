@@ -4,6 +4,7 @@ const express = require("express");
 const router = express.Router();
 const userAdminReport = require("@components/user-admin-report");
 const userList = require("@components/user-list");
+const userAdminWelcome = require("@components/user-admin-welcome");
 const userAdminList = require("@components/user-admin-list");
 const userAdminListNames = require("@components/user-admin-listnames");
 const userAdminListEmail = require("@components/user-admin-listemail");
@@ -25,11 +26,23 @@ const hashResponse = require("@services/hash-response");
 const asyncHandler = require("express-async-handler");
 
 router.get(
-    "/report",
+    "/admin/report",
     authAdmin,
     asyncHandler(async (req, res) => {
         const result = await userAdminReport(req);
         res.send(result);
+    })
+);
+
+router.get(
+    "/admin/welcome/:email",
+    authAdmin,
+    asyncHandler(async (req, res) => {
+        const result = await userAdminWelcome(req);
+        hashResponse(res, req, {
+            status: result ? "success" : "failure",
+            data: result,
+        });
     })
 );
 

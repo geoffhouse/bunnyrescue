@@ -5,13 +5,14 @@ import AdminAddUser from "./AdminAddUser";
 import ContentWrapper from "./ContentWrapper";
 import { useHistory } from "react-router-dom";
 import { useSnackbar } from "notistack";
+import FetchGet from "../services/FetchGet";
 
 export default function PageAdminAddUser({ times, serverlocation }) {
     const history = useHistory();
     const [isSaving, setIsSaving] = React.useState(false);
     const { enqueueSnackbar } = useSnackbar();
 
-    const addUser = async (user) => {
+    const addUser = async (user, sendEmail) => {
         setIsSaving(true);
 
         const url = `/api/user/admin/add`;
@@ -30,6 +31,9 @@ export default function PageAdminAddUser({ times, serverlocation }) {
                 enqueueSnackbar("Saved user details", {
                     variant: "success",
                 });
+                if (sendEmail) {
+                    await sendWelcomeEmail(user);
+                }
                 history.push("/admin/listusers");
             } else {
                 throw new Error();
@@ -41,6 +45,23 @@ export default function PageAdminAddUser({ times, serverlocation }) {
             console.error(error);
         }
         setIsSaving(false);
+    };
+
+    const sendWelcomeEmail = async (user) => {
+        const url = `/api/user/admin/welcome/${user.email}`;
+        try {
+            const result = await FetchGet(url);
+            if (result && result.status === "success") {
+                enqueueSnackbar("Sent welcome email to user", {
+                    variant: "success",
+                });
+            }
+        } catch (error) {
+            enqueueSnackbar("Failed to send welcome email to user", {
+                variant: "error",
+            });
+            console.error(error);
+        }
     };
 
     return (

@@ -17,6 +17,7 @@ const StyledP = styled("p")(({ theme }) => ({
 export default function AddUser({ isSaving = false, user, onSave }) {
     const [emails, setEmails] = React.useState([]);
     const [emailTaken, setEmailTaken] = React.useState(false);
+    const [sendEmail, setSendEmail] = React.useState(true);
     const [localUser, setLocalUser] = React.useState({
         name: "",
         email: "",
@@ -113,6 +114,21 @@ export default function AddUser({ isSaving = false, user, onSave }) {
                         label="Admin"
                     />
                 </FormGroup>
+
+                <StyledP sx={{ marginBottom: "4px" }}>Send the user a welcome email with their login details.</StyledP>
+                <FormGroup row>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                disabled={localUser.name === "admin"}
+                                checked={sendEmail}
+                                onChange={(event) => setSendEmail(event.target.checked)}
+                                color="primary"
+                            />
+                        }
+                        label="Send welcome email"
+                    />
+                </FormGroup>
             </form>
 
             <Box
@@ -147,12 +163,12 @@ export default function AddUser({ isSaving = false, user, onSave }) {
                         disabled={isSaving || localUser.email === "" || emailTaken}
                         color="primary"
                         variant="contained"
-                        onClick={() => onSave(localUser)}
+                        onClick={() => onSave(localUser, sendEmail)}
                         sx={{
                             marginRight: "8px",
                         }}
                     >
-                        Save
+                        Add
                     </Button>
                     {isSaving && (
                         <CircularProgress
