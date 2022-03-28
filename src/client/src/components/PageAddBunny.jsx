@@ -33,7 +33,7 @@ export default function PageAddBunny({ user, serverurl, servername, serverlocati
     const createBunny = async () => {
         setIsCreating(true);
 
-        const url = "/api/bunny/create/";
+        const url = "/api/bunny/add/";
 
         const postData = {
             name: bunny.name,
