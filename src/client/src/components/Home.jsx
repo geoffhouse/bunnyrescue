@@ -461,40 +461,46 @@ export default function Home({ times, serverprize }) {
                     </Slide>
                 )}
                 {user?.data?.isAdmin && (
-                    <GridItem item xs={12}>
-                        <HomeLink to="/admin/adduser">
-                            <HomeCard
-                                title="Add New User"
-                                subtitle="Pre-register users with their email address"
-                                icon={PersonAddAltIcon}
-                                isAdmin
-                            ></HomeCard>
-                        </HomeLink>
-                    </GridItem>
+                    <Slide in={true} direction="right">
+                        <GridItem item xs={12}>
+                            <HomeLink to="/admin/adduser">
+                                <HomeCard
+                                    title="Add New User"
+                                    subtitle="Pre-register users with their email address"
+                                    icon={PersonAddAltIcon}
+                                    isAdmin
+                                ></HomeCard>
+                            </HomeLink>
+                        </GridItem>
+                    </Slide>
                 )}
                 {user?.data?.isAdmin && (
-                    <GridItem item xs={12}>
-                        <HomeLink to="/admin/listusers">
-                            <HomeCard
-                                title="List all users"
-                                subtitle="View and edit all user details"
-                                icon={SupervisedUserCircleIcon}
-                                isAdmin
-                            ></HomeCard>
-                        </HomeLink>
-                    </GridItem>
+                    <Slide in={true} direction="right">
+                        <GridItem item xs={12}>
+                            <HomeLink to="/admin/listusers">
+                                <HomeCard
+                                    title="List all users"
+                                    subtitle="View and edit all user details"
+                                    icon={SupervisedUserCircleIcon}
+                                    isAdmin
+                                ></HomeCard>
+                            </HomeLink>
+                        </GridItem>
+                    </Slide>
                 )}
                 {user?.data?.isAdmin && (
-                    <GridItem item xs={12}>
-                        <HomeLink to="/admin/listbunnies">
-                            <HomeCard
-                                title="List all bunnies"
-                                subtitle="View and edit all bunny details"
-                                icon={ListAltIcon}
-                                isAdmin
-                            ></HomeCard>
-                        </HomeLink>
-                    </GridItem>
+                    <Slide in={true} direction="right">
+                        <GridItem item xs={12}>
+                            <HomeLink to="/admin/listbunnies">
+                                <HomeCard
+                                    title="List all bunnies"
+                                    subtitle="View and edit all bunny details"
+                                    icon={ListAltIcon}
+                                    isAdmin
+                                ></HomeCard>
+                            </HomeLink>
+                        </GridItem>
+                    </Slide>
                 )}
             </>
         );
