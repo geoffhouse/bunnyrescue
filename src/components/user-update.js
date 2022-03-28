@@ -3,7 +3,9 @@
 const Logger = require("@services/logger");
 const mongoCollection = require("@services/mongo-collection");
 const UserGetId = require("@components/user-getid");
+const Notifications = require("@services/notifications");
 
+// allows user to update their own details
 module.exports = async (req) => {
     try {
         const params = req.body;
@@ -14,19 +16,19 @@ module.exports = async (req) => {
         }
 
         if (userid != req.params.userid) {
-            //TODO or an admin
             Logger.error(`user-update: user id ${userid} can't update a different user (${params.userid})`);
             return false;
         }
 
-        Logger.info("updating user in db: " + JSON.stringify(params));
+        Logger.info(`updating user in db: ${JSON.stringify(params)}`);
 
         const usersCollection = await mongoCollection("users");
         const results = await usersCollection.updateOne({ _id: userid }, { $set: params });
 
-        Logger.info(`updated user ${userid} results: ` + JSON.stringify(results));
+        Logger.debug(`updated user ${userid} results: ${JSON.stringify(results)}`);
 
         if (results.result !== null && results.result.ok === 1) {
+            new Notifications().send(`${user.name} updated their user details`);
             return true;
         }
         return false;

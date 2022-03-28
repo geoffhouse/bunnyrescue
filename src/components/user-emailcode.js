@@ -1,6 +1,7 @@
 "use strict";
 
 const sgMail = require("@sendgrid/mail");
+const Logger = require("@services/logger");
 
 module.exports = async ({ email, code }) => {
     try {
@@ -19,10 +20,10 @@ module.exports = async ({ email, code }) => {
         };
         const response = await sgMail.send(msg);
         if (response[0]?.statusCode === 202 || response[0]?.statusCode === 200) {
-            console.log(`user-emailcode: sent email code to ${email} ok`);
+            Logger.info(`user-emailcode: sent email code to ${email} ok`);
             return true;
         }
-        console.log(response);
+        console.error(response);
     } catch (error) {
         if (error.response) {
             const { response } = error;

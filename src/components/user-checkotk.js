@@ -1,9 +1,10 @@
 "use strict";
 
 const Logger = require("@services/logger");
-const mongoCreateIndex = require("@services/mongo-createindex");
 const mongoCollection = require("@services/mongo-collection");
 const delay = require("delay");
+const userAddBrowser = require("@components/user-addbrowser");
+const Notifications = require("@services/notifications");
 
 module.exports = async (req) => {
     // delay to prevent brute forcing
@@ -17,7 +18,7 @@ module.exports = async (req) => {
     const usersCollection = await mongoCollection("users");
     const user = await usersCollection?.findOne({ email: email.toLowerCase() });
     if (!user) {
-        console.log(`user-checkotk: no user found with email ${email}`);
+        Logger.warn(`user-checkotk: no user found with email ${email}`);
         return false;
     }
 
@@ -25,9 +26,15 @@ module.exports = async (req) => {
     const userkeysCollection = await mongoCollection("userkeys");
     const keyResult = await userkeysCollection.findOne({ userid: user._id, code: parseInt(otk) });
     if (!keyResult) {
-        console.log(`user-checkotk: userkey ${otk} not found for user id ${user._id}`);
+        new Notifications().send(`${user.name} failed to register a new browser - incorrect code entered`);
+        Logger.warn(`user-checkotk: userkey ${otk} not found for user id ${user._id}`);
         return false;
     }
+
+    Logger.info(`user-checkotk: userkey ${otk} found OK for user id ${user._id}`);
+
+    // we're happy - add the browser to the user (for records)
+    await userAddBrowser(req, user);
 
     // we're happy with the result, pass back the user id and key
     return {

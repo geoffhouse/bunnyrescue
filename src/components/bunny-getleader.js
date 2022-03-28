@@ -1,6 +1,5 @@
 "use strict";
 
-const Logger = require("@services/logger");
 const mongoCollection = require("@services/mongo-collection");
 
 module.exports = async () => {

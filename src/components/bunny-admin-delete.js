@@ -2,17 +2,30 @@
 
 const Logger = require("@services/logger");
 const mongoCollection = require("@services/mongo-collection");
+const Notifications = require("@services/notifications");
+const userGetCurrent = require("@components/user-getcurrent");
+const bunnyGet = require("@components/bunny-get");
 
 module.exports = async (req) => {
     try {
-        Logger.info(`deleting bunny id ${req.params.bunnyid} from db`);
+        const bunnyId = req.params.bunnyid;
+        Logger.info(`bunny-admin-delete: deleting bunny id ${bunnyId} from db`);
+
+        const bunny = await bunnyGet(req); // eugh
+        const user = await userGetCurrent(req);
+
+        if (!bunny) {
+            Logger.error(`bunny-admin-delete: bunny id ${bunnyId} not found`);
+            return false;
+        }
 
         const bunniesCollection = await mongoCollection("bunnies");
-        const results = await bunniesCollection.deleteOne({ _id: req.params.bunnyid });
+        const results = await bunniesCollection.deleteOne({ _id: bunnyId });
 
-        Logger.info(`deleted bunny ${req.params.bunnyid} results: ` + JSON.stringify(results));
+        Logger.debug(`bunny-admin-delete: deleted bunny ${bunnyId} results: ${JSON.stringify(results)}`);
 
         if (results.result !== null && results.result.ok === 1) {
+            new Notifications().send(`${user?.name} deleted bunny '${bunny?.name}', id ${bunny?._id}`);
             return true;
         }
         return false;

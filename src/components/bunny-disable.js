@@ -9,18 +9,19 @@ const mongoCollection = require("@services/mongo-collection");
 module.exports = async (req) => {
     try {
         const bunnyId = req.params.bunnyid;
+        Logger.info(`bunny-disable: disabling bunny id ${bunnyId} in db`);
+
         const bunny = await bunnyGet(req); // eugh
         const user = await UserGetCurrent(req);
 
         if (!bunny) {
+            Logger.error(`bunny-disable: bunny id ${bunnyId} not found`);
             return false;
         }
 
-        Logger.info(`bunny-disable: disabling bunny id ${bunnyId} in db`);
-
         const bunniesCollection = await mongoCollection("bunnies");
         const results = await bunniesCollection?.updateOne(
-            { _id: bunnyId },
+            { _id: bunnyId, userid: user?._id },
             {
                 $set: {
                     lastchanged: Date.now(),
@@ -29,10 +30,10 @@ module.exports = async (req) => {
             }
         );
 
-        Logger.info(`disabled bunny id ${bunnyId}, results: ` + JSON.stringify(results));
+        Logger.debug(`bunny-disable: disabled bunny id ${bunnyId}, results: ${JSON.stringify(results)}`);
 
         if (results.result !== null && results.result.ok === 1) {
-            new Notifications().send("User " + user["name"] + " disabled bunny " + bunny.name);
+            new Notifications().send(`${user?.name} disabled bunny '${bunny?.name}', id ${bunny?._id}`);
             return true;
         }
         return false;

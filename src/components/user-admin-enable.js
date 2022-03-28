@@ -28,7 +28,7 @@ module.exports = async (req) => {
             }
         );
 
-        Logger.info(`user-admin-enable: enabled user id ${req.params.userid}, results: ` + JSON.stringify(results));
+        Logger.debug(`user-admin-enable: enabled user id ${req.params.userid}, results: ` + JSON.stringify(results));
 
         if (results.result !== null && results.result.ok === 1) {
             new Notifications().send(`User ${currentUser.name} enabled user ${user.name}`);

@@ -6,7 +6,7 @@ module.exports = class Notifications {
     async send(message) {
         if (process.env.PROWL_TOKEN) {
             const prowl = new ProwlLibrary(process.env.PROWL_TOKEN);
-            Logger.info("sending prowl message: " + message);
+            Logger.info("notifications: sending prowl message: " + message);
 
             prowl.push(message, "BunnyRescue", function (err, remaining) {
                 if (err) throw err;
@@ -15,12 +15,13 @@ module.exports = class Notifications {
                 }
             });
         }
-        if (process.env.PUSHOVER_TOKEN) {
-            Logger.info("sending pushover message: " + message);
+        if (process.env.PUSHOVER_APPTOKEN && process.env.PUSHOVER_USERKEY) {
+            Logger.info("notifications: sending pushover message: " + message);
             const push = new Pushover({
                 token: process.env.PUSHOVER_APPTOKEN,
+                user: process.env.PUSHOVER_USERKEY,
             });
-            push.send(process.env.PUSHOVER_TOKEN, "BunnyRescue1", message);
+            push.send("BunnyRescue1", message);
         }
     }
 };

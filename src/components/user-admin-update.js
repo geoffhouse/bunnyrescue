@@ -8,12 +8,12 @@ module.exports = async (req) => {
         const params = req.body;
 
         if (params.name === "admin") {
-            Logger.warn("cannot update admin account");
+            Logger.warn("user-admin-update: cannot update admin account");
             return false;
         }
 
         if (!params._id) {
-            Logger.error("no user id passed to user-admin-update");
+            Logger.error("user-admin-update: no user id passed");
             return false;
         }
 
@@ -21,12 +21,12 @@ module.exports = async (req) => {
             params.email = params.email.toLowerCase();
         }
 
-        Logger.info("updating user in db: " + JSON.stringify(params));
+        Logger.info(`user-admin-update: updating user in db: ${JSON.stringify(params)}`);
 
         const usersCollection = await mongoCollection("users");
         const results = await usersCollection.updateOne({ _id: params._id }, { $set: params });
 
-        Logger.info(`updated user ${params._id} results: ` + JSON.stringify(results));
+        Logger.debug(`user-admin-update: updated user ${params._id} results: ${JSON.stringify(results)}`);
 
         if (results.result !== null && results.result.ok === 1) {
             return true;

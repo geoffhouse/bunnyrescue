@@ -1,6 +1,5 @@
 "use strict";
 
-const Logger = require("@services/logger");
 const delay = require("delay");
 const mongoCollection = require("@services/mongo-collection");
 

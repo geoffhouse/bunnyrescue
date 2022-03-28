@@ -4,11 +4,9 @@ const Logger = require("@services/logger");
 const mongoCreateIndex = require("@services/mongo-createindex");
 const mongoCollection = require("@services/mongo-collection");
 const delay = require("delay");
-const en = require("nanoid-good/locale/en");
-const nanoid = require("nanoid-good").nanoid(en);
-const crypto = require("crypto");
 const userGenerateAdmin = require("./user-generateadmin");
 const userEmailCode = require("./user-emailcode");
+const Notifications = require("@services/notifications");
 
 module.exports = async (req) => {
     // delay to prevent brute forcing
@@ -16,7 +14,7 @@ module.exports = async (req) => {
 
     // get email from params passed in
     // we don't have a user id yet. They might not even have an account.
-    const email = req.params.email;
+    const email = req.params.email.toLowerCase();
     let userId = null;
 
     // check database for user with that email
@@ -34,7 +32,8 @@ module.exports = async (req) => {
                 return false;
             }
         } else {
-            console.log(`user-generateotk: email ${email} not found in user database`);
+            new Notifications().send(`User failed to register with email address: ${email}`);
+            Logger.warn(`user-generateotk: email ${email} not found in user database`);
             return false;
         }
     } else {
@@ -51,7 +50,7 @@ module.exports = async (req) => {
         code: code,
         timestamp: new Date(),
     });
-    console.log(`generated code for user id ${userId}: ${code}`);
+    Logger.info(`user-generateotk: generated code for user id ${userId}: ${code}`);
 
     // now use the user id to get the email address:
     const result = await usersCollection?.findOne({ _id: userId });

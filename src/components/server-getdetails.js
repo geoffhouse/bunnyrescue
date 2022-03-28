@@ -1,7 +1,5 @@
 "use strict";
 
-const Logger = require("@services/logger");
-
 module.exports = async (req) => {
     return {
         lat: parseFloat(process.env.HOME_LAT),

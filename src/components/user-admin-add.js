@@ -11,7 +11,7 @@ module.exports = async (req) => {
     const params = req.body;
 
     if (!params.email) {
-        Logger.error("no email address passed to user-admin-add");
+        Logger.error("user-admin-add: no email address passed");
         return false;
     }
 
@@ -22,7 +22,7 @@ module.exports = async (req) => {
     const usersCollection = await mongoCollection("users");
     const user = await usersCollection?.findOne({ email: params.email });
     if (user) {
-        console.log(`user-admin-add: email ${params.email} already found in user database!`);
+        Logger.error(`user-admin-add: email ${params.email} already found in user database!`);
         return false;
     }
 
@@ -40,9 +40,9 @@ module.exports = async (req) => {
         params["isAdmin"] = params.isAdmin !== undefined ? params.isAdmin : false;
         params["enabled"] = params.enabled !== undefined ? params.enabled : true;
 
-        Logger.info("saving new user to db: " + JSON.stringify(params));
+        Logger.info("user-admin-add: saving new user to db: " + JSON.stringify(params));
         const results = await usersCollection?.insertOne(params);
-        Logger.info(`new user ${id} results: ` + JSON.stringify(results));
+        Logger.debug(`user-admin-add: new user ${id} results: ` + JSON.stringify(results));
         if (results.result !== null && results.result.ok === 1) {
             new Notifications().send(`Created user name: '${params.name}', email: '${params.email}', id: '${id}'`);
             return id;

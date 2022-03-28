@@ -14,7 +14,7 @@ module.exports = async (req) => {
     const user = await usersCollection?.findOne({ email: process.env.ADMIN_EMAIL });
 
     if (user) {
-        console.log(`user-generateadmin: admin account already found in user database!`);
+        Logger.warn(`user-generateadmin: admin account already found in user database!`);
         return;
     }
 
@@ -39,9 +39,9 @@ module.exports = async (req) => {
         enabled: true,
     });
     if (!newUser.insertedId) {
-        console.log(`user-generateadmin: failed to create new user for ${process.env.ADMIN_EMAIL}`);
+        Logger.error(`user-generateadmin: failed to create new user for ${process.env.ADMIN_EMAIL}`);
         return false;
     }
-    console.log(`user-generateadmin: created new user for ${process.env.ADMIN_EMAIL}`);
+    Logger.info(`user-generateadmin: created new user for ${process.env.ADMIN_EMAIL}`);
     return newUser.insertedId;
 };

@@ -50,15 +50,15 @@ module.exports = async (req) => {
                 indexedUsers[eachBunny["userid"]]["totalCount"] =
                     indexedUsers[eachBunny["userid"]]["foundCount"] + indexedUsers[eachBunny["userid"]]["ownedCount"];
             } else {
-                console.log(
-                    `skipping adding count of bunny name ${eachBunny.name} id ${eachBunny._id} to user '${
-                        indexedUsers[eachBunny["userid"]]["name"]
-                    }' as it was never found`
+                Logger.info(
+                    `user-admin-report: skipping adding count of bunny name ${eachBunny.name} id ${
+                        eachBunny._id
+                    } to user '${indexedUsers[eachBunny["userid"]]["name"]}' as it was never found`
                 );
             }
         } else {
-            console.log(
-                "user id " + eachBunny["userid"] + " has bunny id " + eachBunny["_id"] + " but no user account"
+            Logger.info(
+                `user-admin-report: user id ${eachBunny["userid"]} has bunny id ${eachBunny["_id"]} but no user account`
             );
         }
     }

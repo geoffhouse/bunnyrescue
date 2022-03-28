@@ -1,6 +1,5 @@
 "use strict";
 
-const Logger = require("@services/logger");
 const UserGetCurrent = require("@components/user-getcurrent");
 const mongoCollection = require("@services/mongo-collection");
 

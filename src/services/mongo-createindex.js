@@ -8,6 +8,7 @@
  */
 
 const mongoDb = require("@services/mongo-db");
+const Logger = require("@services/logger");
 
 module.exports = async (collection, indexName, options = {}) => {
     try {
@@ -17,7 +18,7 @@ module.exports = async (collection, indexName, options = {}) => {
         await collection.createIndex(indexDetails, options);
     } catch (err) {
         if (err.message.indexOf("with different options")) {
-            console.log(
+            Logger.info(
                 `mongo-createindex: index '${indexName}' already exists with different options - updating instead`
             );
         } else {

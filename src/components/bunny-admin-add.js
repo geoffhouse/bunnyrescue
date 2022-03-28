@@ -3,7 +3,6 @@
 const Logger = require("@services/logger");
 const en = require("nanoid-good/locale/en");
 const nanoid = require("nanoid-good").nanoid(en);
-const UserGetCurrent = require("@components/user-getcurrent");
 const Notifications = require("@services/notifications");
 const mongoCollection = require("@services/mongo-collection");
 
@@ -13,32 +12,40 @@ module.exports = async (req) => {
         const id = nanoid(8);
 
         if (!params.name) {
-            Logger.error("no name passed to bunny-admin-add");
+            Logger.error("bunny-admin-add: no name passed");
             return null;
         }
 
         if (!params.location) {
-            Logger.error("no location passed to bunny-admin-add");
+            Logger.error("bunny-admin-add: no location passed");
             return null;
         }
 
         if (!params.location.lat) {
-            Logger.error("no lat passed to bunny-admin-add");
+            Logger.error("bunny-admin-add: no lat passed");
             return null;
         }
 
         if (!params.location.lng) {
-            Logger.error("no long passed to bunny-admin-add");
+            Logger.error("bunny-admin-add: no long passed");
             return null;
         }
 
         if (isNaN(params.location.lat)) {
-            Logger.error(`invalid lat passed to bunny-admin-add: ${params.location.lat}`);
+            Logger.error(`bunny-admin-add: invalid lat passed`);
             return null;
         }
 
         if (isNaN(params.location.lng)) {
-            Logger.error(`invalid long passed to bunny-admin-add: ${params.location.lng}`);
+            Logger.error(`bunny-admin-add: invalid long passed`);
+            return null;
+        }
+
+        // get bunny user details
+        const usersCollection = await mongoCollection("users");
+        const user = await usersCollection.findOne({ _id: params.userid });
+        if (!user) {
+            Logger.error(`bunny-admin-add: invalid user id ${params.userid}`);
             return null;
         }
 
@@ -49,16 +56,16 @@ module.exports = async (req) => {
         params["lastchanged"] = Date.now();
         params["enabled"] = true;
 
-        Logger.info("saving new bunny to db: " + JSON.stringify(params));
+        Logger.info("bunny-admin-add: saving new bunny to db: " + JSON.stringify(params));
 
         const bunniesCollection = await mongoCollection("bunnies");
         const results = await bunniesCollection?.insertOne(params);
 
-        Logger.info(`new bunny ${id} results: ` + JSON.stringify(results));
+        Logger.debug(`bunny-admin-add: new bunny ${id} results: ` + JSON.stringify(results));
 
         if (results.result !== null && results.result.ok === 1) {
             new Notifications().send(
-                `Created bunny name: '${params.name}', message: '${params.message}', user id: '${params.userid}'`
+                `${user.name} created bunny name: '${params.name}', message: '${params.message ? params.message : ""}'`
             );
             return id;
         }

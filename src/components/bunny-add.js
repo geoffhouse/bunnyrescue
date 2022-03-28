@@ -17,38 +17,38 @@ module.exports = async (req) => {
             return false;
         }
 
-        if (user._id != params.userid) {
+        if (!!params.userid && user._id != params.userid) {
             Logger.error(`bunny-add: user id ${user._id} can't create a bunny for a different user (${params.userid})`);
             return false;
         }
 
         if (!params.name) {
-            Logger.error("no name passed to bunny-add");
+            Logger.error("bunny-add: no name passed");
             return null;
         }
 
         if (!params.location) {
-            Logger.error("no location passed to bunny-add");
+            Logger.error("bunny-add: no location passed");
             return null;
         }
 
         if (!params.location.lat) {
-            Logger.error("no lat passed to bunny-add");
+            Logger.error("bunny-add: no lat passed");
             return null;
         }
 
         if (!params.location.lng) {
-            Logger.error("no long passed to bunny-add");
+            Logger.error("bunny-add: no long passed");
             return null;
         }
 
         if (isNaN(params.location.lat)) {
-            Logger.error(`invalid lat passed to bunny-add: ${params.location.lat}`);
+            Logger.error(`bunny-add: invalid lat: ${params.location.lat}`);
             return null;
         }
 
         if (isNaN(params.location.lng)) {
-            Logger.error(`invalid long passed to bunny-add: ${params.location.lng}`);
+            Logger.error(`bunny-add: invalid long: ${params.location.lng}`);
             return null;
         }
 
@@ -64,11 +64,13 @@ module.exports = async (req) => {
         const bunniesCollection = await mongoCollection("bunnies");
         const results = await bunniesCollection?.insertOne(params);
 
-        Logger.info(`new bunny ${id} results: ` + JSON.stringify(results));
+        Logger.debug(`new bunny ${id} results: ` + JSON.stringify(results));
 
         if (results.result !== null && results.result.ok === 1) {
             new Notifications().send(
-                `Created bunny name: '${params.name}', message: '${params.message}', user: '${user.name}'`
+                `Created bunny name: '${params.name}', message: '${params.message ? params.message : ""}', user: '${
+                    user.name
+                }'`
             );
             return id;
         }

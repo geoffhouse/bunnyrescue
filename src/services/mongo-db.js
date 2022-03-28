@@ -6,6 +6,7 @@
  * 0.0.1 17/05/2021 - Created first version (GH)
  */
 
+const Logger = require("@services/logger");
 const { MongoClient } = require("mongodb");
 const url = `mongodb://bunnyrescue-mongo:27017`;
 let isConnected;
@@ -20,12 +21,12 @@ class Mongo {
 
     async connect(dbName) {
         if (!isConnected) {
-            console.log(`mongo-db: connecting to mongo db at ${url}`);
+            Logger.log(`mongo-db: connecting to mongo db at ${url}`);
             await this.client.connect();
             isConnected = true;
-            console.log("mongo-db: connected to mongo db OK");
+            Logger.log("mongo-db: connected to mongo db OK");
         }
-        console.log(`mongo-db: opening database ${dbName}`);
+        Logger.log(`mongo-db: opening database ${dbName}`);
         this.db = this.client.db(dbName);
     }
 }

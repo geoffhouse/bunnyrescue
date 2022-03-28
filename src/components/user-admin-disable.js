@@ -33,7 +33,7 @@ module.exports = async (req) => {
             }
         );
 
-        Logger.info(`user-admin-disable: disabled user id ${req.params.userid}, results: ` + JSON.stringify(results));
+        Logger.debug(`user-admin-disable: disabled user id ${req.params.userid}, results: ` + JSON.stringify(results));
 
         if (results.result !== null && results.result.ok === 1) {
             new Notifications().send(`User ${currentUser.name} disabled user ${user.name}`);

@@ -20,7 +20,6 @@ module.exports = class Db {
 
             // try to connect
             try {
-                // Logger.debug(`db->connect: attempting connection to database using url ${url}`);
                 await client.connect();
 
                 // and save it to static var
@@ -37,14 +36,14 @@ module.exports = class Db {
     async disconnect() {
         if (Db.dbObject !== undefined) {
             try {
-                Logger.debug("db->disconnect: disconnecting database");
+                Logger.debug("db: disconnecting database");
                 await Db.dbObject.close();
-                Logger.debug("db->disconnect: done");
+                Logger.debug("db: done");
             } catch (err) {
                 Logger.error(error.trace);
             }
         } else {
-            Logger.warn(`db->disconnect: nothing to disconnect!`);
+            Logger.warn(`db: nothing to disconnect!`);
         }
     }
 };
