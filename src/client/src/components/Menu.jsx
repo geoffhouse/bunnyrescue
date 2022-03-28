@@ -5,7 +5,6 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import SearchIcon from "@mui/icons-material/Search";
 import HomeIcon from "@mui/icons-material/Home";
@@ -14,14 +13,15 @@ import PinDropIcon from "@mui/icons-material/PinDrop";
 import LockIcon from "@mui/icons-material/Lock";
 import HelpIcon from "@mui/icons-material/Help";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import Cookie from "js-cookie";
 import GradeIcon from "@mui/icons-material/Grade";
+import { useCookies } from "react-cookie";
 
 export default function Menu({ open = false, onClose, times }) {
+    const [, removeCookie] = useCookies();
+
     const Logout = function () {
-        //TODO  hooks
-        //TODO add key remove
-        Cookie.remove("userid");
+        removeCookie("userid");
+        removeCookie("userkey");
         window.location = "/";
     };
 
