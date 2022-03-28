@@ -22,8 +22,8 @@ export default function PageScanBunny({ serverurl }) {
             <BackBar title="Scan a bunny"></BackBar>
             <ContentWrapper
                 sx={{
+                    padding: "1rem",
                     paddingBottom: "6rem",
-                    margin: "1rem",
                 }}
                 scrollable
             >

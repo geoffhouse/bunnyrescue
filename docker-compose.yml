@@ -11,6 +11,7 @@ services:
         restart: always
         volumes:
             - ./src:/home/node/bunnyrescue
+            - ./templates:/home/node/bunnyrescue/templates
         environment:
             LOGFOLDER: ${LOGFOLDER}
             LOGNAME: ${LOGNAME}

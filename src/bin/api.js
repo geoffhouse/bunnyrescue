@@ -15,6 +15,7 @@ require("dotenv").config();
 const userRouter = require("@routes/user");
 const bunnyRouter = require("@routes/bunny");
 const serverRouter = require("@routes/server");
+const templateRouter = require("@routes/template");
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use(morgan("combined", { stream: accessLogStream }));
 app.use("/api/user", userRouter);
 app.use("/api/bunny", bunnyRouter);
 app.use("/api/server", serverRouter);
+app.use("/api/template", templateRouter);
 
 // get environment
 const nodeEnv = process.env.NODE_ENV || "production";
