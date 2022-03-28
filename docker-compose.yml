@@ -27,6 +27,9 @@ services:
             START_TIME: ${START_TIME}
             END_TIME: ${END_TIME}
             ADMIN_EMAIL: ${ADMIN_EMAIL}
+            PUSHOVER_APPTOKEN: ${PUSHOVER_APPTOKEN}
+            PUSHOVER_USERKEY: ${PUSHOVER_USERKEY}
+            PROWL_TOKEN: ${PROWL_TOKEN}
         networks:
             - bunnyrescue
         ports:
