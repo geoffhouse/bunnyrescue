@@ -76,6 +76,7 @@ export default function ListBunnies({ times }) {
                             <TableCell
                                 sx={{
                                     width: "1rem",
+                                    padding: "16px 8px",
                                     "@media (max-width:350px)": {
                                         display: "none",
                                     },
@@ -86,6 +87,7 @@ export default function ListBunnies({ times }) {
                             <TableCell
                                 sx={{
                                     width: "1rem",
+                                    padding: "16px 4px",
                                     "@media (max-width:350px)": {
                                         display: "none",
                                     },
@@ -93,7 +95,11 @@ export default function ListBunnies({ times }) {
                             >
                                 Hidden
                             </TableCell>
-                            <TableCell></TableCell>
+                            <TableCell
+                                sx={{
+                                    padding: "16px 4px",
+                                }}
+                            ></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -109,8 +115,20 @@ export default function ListBunnies({ times }) {
                                 key={user._id}
                                 onClick={() => handleRowClicked(user._id)}
                             >
-                                <TableCell>
-                                    <Box>{user.name}</Box>
+                                <TableCell
+                                    sx={{
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                        whiteSpace: "nowrap",
+                                        "@media (max-width:500px)": {
+                                            maxWidth: "180px",
+                                        },
+                                        "@media (max-width:450px)": {
+                                            maxWidth: "130px",
+                                        },
+                                    }}
+                                >
+                                    <Box>{user.name ? user.name : user.email}</Box>
                                     {user.isAdmin && (
                                         <Box
                                             sx={{
@@ -123,6 +141,20 @@ export default function ListBunnies({ times }) {
                                             }}
                                         >
                                             ADMIN
+                                        </Box>
+                                    )}
+                                    {!user.lastvisited && (
+                                        <Box
+                                            sx={{
+                                                fontWeight: 600,
+                                                display: "inline-block",
+                                                padding: "1px 5px",
+                                                margin: "2px 0px",
+                                                color: "white",
+                                                backgroundColor: "#666",
+                                            }}
+                                        >
+                                            PENDING
                                         </Box>
                                     )}
                                 </TableCell>
@@ -153,7 +185,9 @@ export default function ListBunnies({ times }) {
                                 >
                                     {user.totalhidden}
                                 </TableCell>
-                                <TableCell sx={{ width: "1rem", opacity: "1 !important" }}>
+                                <TableCell
+                                    sx={{ width: "40px", padding: "16px 8px 16px 0px", opacity: "1 !important" }}
+                                >
                                     <ItemMenu
                                         item={user}
                                         menuItems={[
