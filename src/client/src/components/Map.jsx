@@ -49,7 +49,6 @@ export default function Map({ serverlocation }) {
     };
 
     if (bunnies.status !== "success") {
-        //TODO - make this look nicer
         return <Loading sx={{ marginTop: "2rem" }} />;
     }
 
