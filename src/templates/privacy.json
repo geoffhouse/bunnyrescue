@@ -1,0 +1,32 @@
+[
+    {
+        "name": "Privacy",
+        "content": [
+            "We don't store any user-identifiable data such as names, locations or passwords.",
+            "We don't store any images or have access to your device's photos.",
+            "We do store your email address when you are registered on the system. This helps secure your account.",
+            "We do store the type and version of your browser when you log in. This helps us make sure the site isn't being abused, and that it works properly on all browsers.",
+            "When choosing a user or team name, please don't use your real name, or anything private that you don't want other people to see."
+        ]
+    },
+    {
+        "name": "Cookies",
+        "content": [
+            "We use cookies to make this site work. We store your username, and a unique randomly-generated key - nothing more sinister than that.",
+            "If you don't allow cookies I'm afraid you won't be able to use this site.",
+            "We don't use tracking cookies, analaytics or anything like that."
+        ]
+    },
+    {
+        "name": "Security",
+        "content": [
+            "All traffic to this website uses HTTPS/SSL certificates. This means that your data is encrypted and secure."
+        ]
+    },
+    {
+        "name": "Location",
+        "content": [
+            "If you want to use the map, you can allow the web page to use your location to update the map. You don't have to."
+        ]
+    }
+]

@@ -1,0 +1,31 @@
+[
+    {
+        "name": "Is there a deadline?",
+        "content": ["There is, but you have plenty of time. There's no need to rush!"]
+    },
+    {
+        "name": "How do I scan QR Codes to find bunnies?",
+        "content": [
+            "You can use the 'Scan a bunny' page within the app.",
+            "Aternatively, you can use your mobile phone's camera to scan the QR codes."
+        ]
+    },
+    {
+        "name": "How do I win?",
+        "content": [
+            "Once you have found a certain amount of bunnies, you win a small prize. Details on how to collect this prize will be made available.",
+            "Secondly, there's a prize for the person who finds the most bunnies. In the event of a tie, a winner will be drawn at random."
+        ]
+    },
+    {
+        "name": "How do I get help/support?",
+        "content": ["Please contact the event organisers."]
+    },
+    {
+        "name": "More about Bunny Rescue",
+        "content": [
+            "Bunny rescue is a web application written by <a href=\"mailto:geoff@housesathome.co.uk\">Geoff House</a>. Full source code is available on Github: <a href=\"https://github.com/geoffhouse/bunnyrescue\" target=\"_blank\" rel=\"noreferrer\">https://github.com/geoffhouse/bunnyrescue</a>",
+            "It's written using Docker, NodeJS, Express, MongoDB, and React.js. Docker images are available from Docker Hub."
+        ]
+    }
+]
