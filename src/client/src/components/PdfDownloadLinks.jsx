@@ -21,15 +21,11 @@ export default function PdfDownloadLinks({ qrcode, colour, bunnyName }) {
                         document={<PdfDocument colour={colour} bunnyName={bunnyName} size="large" qrcode={qrcode} />}
                         fileName={`bunnyrescue-large-${bunnyName}.pdf`}
                     >
-                        {({ blob, url, loading, error }) =>
-                            loading ? (
-                                "Loading document..."
-                            ) : (
-                                <Button startIcon={<PrintIcon />} color="secondary" variant="contained">
-                                    Large
-                                </Button>
-                            )
-                        }
+                        {({ blob, url, loading, error }) => (
+                            <Button disabled={loading} startIcon={<PrintIcon />} color="secondary" variant="contained">
+                                Large
+                            </Button>
+                        )}
                     </StyledLink>
                 )}
                 {qrcode && (
@@ -37,15 +33,11 @@ export default function PdfDownloadLinks({ qrcode, colour, bunnyName }) {
                         document={<PdfDocument colour={colour} bunnyName={bunnyName} size="medium" qrcode={qrcode} />}
                         fileName={`bunnyrescue-medium-${bunnyName}.pdf`}
                     >
-                        {({ blob, url, loading, error }) =>
-                            loading ? (
-                                "Loading document..."
-                            ) : (
-                                <Button startIcon={<PrintIcon />} color="secondary" variant="contained">
-                                    Medium
-                                </Button>
-                            )
-                        }
+                        {({ blob, url, loading, error }) => (
+                            <Button disabled={loading} startIcon={<PrintIcon />} color="secondary" variant="contained">
+                                Medium
+                            </Button>
+                        )}
                     </StyledLink>
                 )}
                 {qrcode && (
@@ -53,15 +45,11 @@ export default function PdfDownloadLinks({ qrcode, colour, bunnyName }) {
                         document={<PdfDocument colour={colour} bunnyName={bunnyName} size="small" qrcode={qrcode} />}
                         fileName={`bunnyrescue-small-${bunnyName}.pdf`}
                     >
-                        {({ blob, url, loading, error }) =>
-                            loading ? (
-                                "Loading document..."
-                            ) : (
-                                <Button startIcon={<PrintIcon />} color="secondary" variant="contained">
-                                    Small
-                                </Button>
-                            )
-                        }
+                        {({ blob, url, loading, error }) => (
+                            <Button disabled={loading} startIcon={<PrintIcon />} color="secondary" variant="contained">
+                                Small
+                            </Button>
+                        )}
                     </StyledLink>
                 )}
             </>

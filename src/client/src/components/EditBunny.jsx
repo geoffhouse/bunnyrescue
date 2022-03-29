@@ -11,6 +11,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import QRCode from "qrcode";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
+import { useDebounce } from "use-debounce";
 
 const StyledP = styled("p")(({ theme }) => ({
     marginTop: "32px",
@@ -20,6 +21,7 @@ const StyledP = styled("p")(({ theme }) => ({
 export default function EditBunny({ serverurl, isSaving = false, bunny, onSave, colour }) {
     const [qrCode, setQrCode] = React.useState(null);
     const [localBunny, setLocalBunny] = React.useState(bunny);
+    const [debouncedBunny] = useDebounce(localBunny, 1000);
 
     React.useEffect(() => {
         const getQrCode = async () => {
@@ -35,7 +37,7 @@ export default function EditBunny({ serverurl, isSaving = false, bunny, onSave, 
         getQrCode();
     }, [localBunny, serverurl]);
 
-    const handleTextboxChanged = (event) => {
+    const handleNameChanged = (event) => {
         setLocalBunny({ ...localBunny, name: event.target.value });
     };
 
@@ -57,7 +59,7 @@ export default function EditBunny({ serverurl, isSaving = false, bunny, onSave, 
 
     const renderPrintLinks = () => {
         if (qrCode) {
-            return <PdfDownloadLinks colour={colour} bunnyName={localBunny.name} qrcode={qrCode} />;
+            return <PdfDownloadLinks colour={colour} bunnyName={debouncedBunny.name} qrcode={qrCode} />;
         }
         return null;
     };
@@ -70,7 +72,7 @@ export default function EditBunny({ serverurl, isSaving = false, bunny, onSave, 
                     fullWidth
                     variant="filled"
                     value={localBunny.name}
-                    onChange={handleTextboxChanged}
+                    onChange={handleNameChanged}
                     label="Bunny name"
                     inputProps={{ maxLength: 40 }}
                 />
