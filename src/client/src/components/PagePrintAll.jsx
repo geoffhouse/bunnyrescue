@@ -26,7 +26,7 @@ export default function PagePrintAll({ serverurl, user, times }) {
     React.useEffect(() => {
         const getList = async () => {
             try {
-                const url = `/api/bunny/list`;
+                const url = `/api/bunny/ownedlist`;
                 const result = await FetchGet(url);
                 for (const eachBunny of result.data) {
                     const text = `${serverurl}/find/${encodeURIComponent(eachBunny._id)}`;

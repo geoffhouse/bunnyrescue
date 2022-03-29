@@ -3,3 +3,5 @@ admin - show user's finds in table?
 Make sure team names are unique
 Hide users with no name from the leadeboard
 Hide users with no name from finds/position
+remove admins from leaderboard
+stop admins from finding bunnies
