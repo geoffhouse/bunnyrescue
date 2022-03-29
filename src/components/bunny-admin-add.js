@@ -54,7 +54,7 @@ module.exports = async (req) => {
         params["userid"] = params.userid;
         params["created"] = Date.now();
         params["lastchanged"] = Date.now();
-        params["enabled"] = true;
+        params["enabled"] = params.enabled !== undefined ? params.enabled : true;
 
         Logger.info("bunny-admin-add: saving new bunny to db: " + JSON.stringify(params));
 
