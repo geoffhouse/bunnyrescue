@@ -17,7 +17,7 @@ module.exports = async (req, user) => {
         returnNewDocument: true,
     };
 
-    Logger.info(`user-addbrowser: adding browser to user ${user["name"]} ${JSON.stringify(update)}`);
+    Logger.info(`user-addbrowser: adding browser to user ${user.name} ${JSON.stringify(update)}`);
 
     const usersCollection = await mongoCollection("users");
     const result = await usersCollection?.findOneAndUpdate(filter, update, options);
@@ -25,7 +25,7 @@ module.exports = async (req, user) => {
     Logger.debug(`user-addbrowser: user ${user["name"]} result: ${JSON.stringify(result)}`);
 
     new Notifications().send(
-        `${user["name"]} registered a new browser: ${req.useragent.browser} ${req.useragent.version} on ${req.useragent.platform}`
+        `${user.name} registered a new browser: ${req.useragent.browser} ${req.useragent.version} on ${req.useragent.platform}`
     );
 
     return result;

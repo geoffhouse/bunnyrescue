@@ -10,6 +10,7 @@ module.exports = async (req) => {
     try {
         const params = req.body;
         const userid = await UserGetId(req);
+        const user = await UserGetCurrent(req);
         if (!userid) {
             Logger.error("user-update: no user id set");
             return false;
