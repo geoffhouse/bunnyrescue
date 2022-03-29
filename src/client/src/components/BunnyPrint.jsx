@@ -65,43 +65,31 @@ export default function BunnyPrint({ serverurl, bunnyId, colour, name, onNextCli
                     document={<PdfDocument colour={colour} bunnyName={name} size="large" qrcode={qrCode} />}
                     fileName={`bunnyrescue-large-${name}.pdf`}
                 >
-                    {({ loading }) =>
-                        loading ? (
-                            "Loading document..."
-                        ) : (
-                            <Button startIcon={<PrintIcon />} color="secondary" variant="contained">
-                                Large
-                            </Button>
-                        )
-                    }
+                    {({ loading }) => (
+                        <Button disabled={loading} startIcon={<PrintIcon />} color="secondary" variant="contained">
+                            Large
+                        </Button>
+                    )}
                 </DownloadButton>
                 <DownloadButton
                     document={<PdfDocument colour={colour} bunnyName={name} size="medium" qrcode={qrCode} />}
                     fileName={`bunnyrescue-medium-${name}.pdf`}
                 >
-                    {({ loading }) =>
-                        loading ? (
-                            "Loading document..."
-                        ) : (
-                            <Button startIcon={<PrintIcon />} color="secondary" variant="contained">
-                                Medium
-                            </Button>
-                        )
-                    }
+                    {({ loading }) => (
+                        <Button disabled={loading} startIcon={<PrintIcon />} color="secondary" variant="contained">
+                            Medium
+                        </Button>
+                    )}
                 </DownloadButton>
                 <DownloadButton
                     document={<PdfDocument colour={colour} bunnyName={name} size="small" qrcode={qrCode} />}
                     fileName={`bunnyrescue-small-${name}.pdf`}
                 >
-                    {({ loading }) =>
-                        loading ? (
-                            "Loading document..."
-                        ) : (
-                            <Button startIcon={<PrintIcon />} color="secondary" variant="contained">
-                                Small
-                            </Button>
-                        )
-                    }
+                    {({ loading }) => (
+                        <Button disabled={loading} startIcon={<PrintIcon />} color="secondary" variant="contained">
+                            Small
+                        </Button>
+                    )}
                 </DownloadButton>
             </Box>
 

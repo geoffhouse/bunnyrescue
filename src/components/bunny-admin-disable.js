@@ -12,7 +12,7 @@ module.exports = async (req) => {
         Logger.info(`bunny-admin-disable: disabling bunny id ${bunnyId} in db`);
 
         const bunny = await bunnyAdminGet(req); // eugh
-        const user = await UserGetCurrent(req);
+        const user = await UserGetCurrent(req); // eugh again
 
         if (!bunny) {
             Logger.error(`bunny-admin-disable: bunny id ${bunnyId} not found`);

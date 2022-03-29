@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import { useHistory } from "react-router-dom";
 import { createTheme } from "@mui/material/styles";
 
-export default function BackBar({ title, position = "fixed" }) {
+export default function BackBar({ title, position = "fixed", menu }) {
     const theme = createTheme();
     const history = useHistory();
 
@@ -62,6 +62,8 @@ export default function BackBar({ title, position = "fixed" }) {
                     >
                         {title}
                     </Typography>
+                    {menu}
+                    {/* <Menu /> */}
                 </Toolbar>
             </AppBar>
         </Box>

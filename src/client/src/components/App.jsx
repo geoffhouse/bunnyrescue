@@ -10,6 +10,7 @@ import PageAdminAddBunny from "./PageAdminAddBunny";
 import PageAdminAddUser from "./PageAdminAddUser";
 import PageAdminEditUser from "./PageAdminEditUser";
 import PageAdminListUsers from "./PageAdminListUsers";
+import PagePrintAll from "./PagePrintAll";
 import PagePrivacy from "./PagePrivacy";
 import PageFaq from "./PageFaq";
 import PageEditBunny from "./PageEditBunny";
@@ -207,6 +208,15 @@ export default function App() {
                                     servername={server.servername}
                                     serverlocation={server.serverlocation}
                                     serverurl={server.serverurl}
+                                    times={server.times}
+                                />
+                            </Route>
+                            <Route exact path="/bunny/printall">
+                                <PagePrintAll
+                                    user={user}
+                                    serverurl={server.serverurl}
+                                    servername={server.servername}
+                                    serverlocation={server.serverlocation}
                                     times={server.times}
                                 />
                             </Route>
