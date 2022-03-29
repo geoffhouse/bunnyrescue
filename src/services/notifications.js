@@ -1,6 +1,7 @@
 const ProwlLibrary = require("node-prowl");
 const Logger = require("@services/logger");
 const Pushover = require("node-pushover");
+const { IncomingWebhook } = require("@slack/webhook");
 
 module.exports = class Notifications {
     async send(message) {
@@ -22,6 +23,15 @@ module.exports = class Notifications {
                 user: process.env.PUSHOVER_USERKEY,
             });
             push.send("BunnyRescue1", message);
+        }
+        if (process.env.SLACK_WEBHOOK) {
+            Logger.info("notifications: sending slack message: " + message);
+            const webhook = new IncomingWebhook(process.env.SLACK_WEBHOOK);
+            (async () => {
+                await webhook.send({
+                    text: message,
+                });
+            })();
         }
     }
 };

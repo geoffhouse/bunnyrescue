@@ -30,6 +30,7 @@ services:
             PUSHOVER_APPTOKEN: ${PUSHOVER_APPTOKEN}
             PUSHOVER_USERKEY: ${PUSHOVER_USERKEY}
             PROWL_TOKEN: ${PROWL_TOKEN}
+            SLACK_WEBHOOK: ${SLACK_WEBHOOK}
         networks:
             - bunnyrescue
         ports:
