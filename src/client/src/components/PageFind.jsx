@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import { useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const Page = styled("div")(({ theme }) => ({
     padding: "1rem",
@@ -46,10 +47,11 @@ export default function PageFind({ times }) {
     const [bunny, setBunny] = React.useState({});
     const [stage, setStage] = React.useState(0);
     const params = useParams();
+    const history = useHistory();
 
     React.useEffect(() => {
         const rescueBunny = async () => {
-            const url = "/api/bunny/rescue/" + encodeURIComponent(params.bunnyid);
+            const url = `/api/bunny/rescue/${encodeURIComponent(params.bunnyid)}`;
             try {
                 const result = await FetchGet(url);
                 if (result.status === "success") {
@@ -65,6 +67,16 @@ export default function PageFind({ times }) {
         rescueBunny();
     }, [params]);
 
+    const handleAdopt = async () => {
+        const url = `/api/bunny/adopt/${encodeURIComponent(params.bunnyid)}`;
+        try {
+            const result = await FetchGet(url);
+            if (result.status === "success") {
+                history.push(`/find/${encodeURIComponent(params.bunnyid)}`);
+            }
+        } catch (error) {}
+    };
+
     const colourBunny = async () => {
         await delay(2000);
         setStage(1);
@@ -77,11 +89,126 @@ export default function PageFind({ times }) {
     );
 
     // states are:
+    // admin - it's an admin user
     // duplicate = already found
     // added - all ok - next stage
     // retry - error - reload page button
     // notstarted
     // ended
+
+    if (status === "admin") {
+        return (
+            <Fade in={true}>
+                <Page>
+                    <RescueText>You're an admin, so you can't rescue bunnies</RescueText>
+                    <SmallBunny variant={bunny.colour} />
+                    <BunnyName>{bunny.name}</BunnyName>
+
+                    <Action>
+                        <BunnyLink to={`/admin/bunny/${bunny._id}`}>
+                            <Button color="secondary" variant="contained">
+                                Edit
+                            </Button>
+                        </BunnyLink>
+                    </Action>
+                </Page>
+            </Fade>
+        );
+    }
+
+    if (bunny.userid === "unassigned") {
+        return (
+            <Page>
+                <Box
+                    sx={{
+                        margin: "1rem",
+                        textAlign: "center",
+                        fontSize: "1.3rem",
+                    }}
+                >
+                    Adopt a bunny
+                </Box>
+                <SmallBunny variant="natural" />
+                <Box sx={{ textAlign: "center", fontSize: "16px", margin: "1rem" }}>
+                    This bunny doesn't have an owner. Would you like to adopt it?
+                </Box>
+
+                <Action>
+                    <BunnyLink to={`/bunny/adopt/${bunny._id}`}>
+                        <Button color="secondary" variant="contained" onClick={handleAdopt}>
+                            Adopt
+                        </Button>
+                    </BunnyLink>
+                </Action>
+
+                {!bunny.enabled && (
+                    <Box sx={{ marginTop: "1rem", textAlign: "center", fontSize: "16px", margin: "1rem" }}>
+                        Psst ... it's also currently disabled! <br />
+                        Once you've adopted it, just scan the QR code again to enable it.
+                    </Box>
+                )}
+            </Page>
+        );
+    }
+
+    //TESTED OK
+    if (status === "owned") {
+        if (!bunny.enabled) {
+            return (
+                <Fade in={true}>
+                    <Page>
+                        <RescueText>This is one of your bunnies, but it's currently disabled.</RescueText>
+                        <SmallBunny variant={bunny.colour} />
+                        <BunnyName>{bunny.name}</BunnyName>
+
+                        <Box sx={{ marginTop: "1rem", textAlign: "center", fontSize: "16px", margin: "1rem" }}>
+                            Once you're ready to place this bunny:
+                            <div
+                                style={{
+                                    textAlign: "left",
+                                    fontWeight: 600,
+                                    maxWidth: "28rem",
+                                    marginLeft: "auto",
+                                    marginRight: "auto",
+                                    marginTop: "2rem",
+                                    marginBottom: "2rem",
+                                }}
+                            >
+                                <li>Edit the details by clicking the button below</li>
+                                <li>Make sure you click the map to select the right location.</li>
+                                <li>Make sure you enable your bunny.</li>
+                            </div>
+                        </Box>
+
+                        <Action>
+                            <BunnyLink to={`/bunny/${bunny._id}`}>
+                                <Button color="secondary" variant="contained">
+                                    Edit
+                                </Button>
+                            </BunnyLink>
+                        </Action>
+                    </Page>
+                </Fade>
+            );
+        }
+        return (
+            <Fade in={true}>
+                <Page>
+                    <RescueText>This is one of your bunnies</RescueText>
+                    <SmallBunny variant={bunny.colour} />
+                    <BunnyName>{bunny.name}</BunnyName>
+
+                    <Action>
+                        <BunnyLink to={`/bunny/${bunny._id}`}>
+                            <Button color="secondary" variant="contained">
+                                Edit
+                            </Button>
+                        </BunnyLink>
+                    </Action>
+                </Page>
+            </Fade>
+        );
+    }
 
     //tested OK
     if (status === "notstarted") {
@@ -134,27 +261,6 @@ export default function PageFind({ times }) {
                         <BunnyLink to="/">
                             <Button color="secondary" variant="contained">
                                 Home
-                            </Button>
-                        </BunnyLink>
-                    </Action>
-                </Page>
-            </Fade>
-        );
-    }
-
-    //TESTED OK
-    if (status === "owned") {
-        return (
-            <Fade in={true}>
-                <Page>
-                    <RescueText>You can't rescue your own bunny!</RescueText>
-                    <SmallBunny variant={bunny.colour} />
-                    <BunnyName>{bunny.name}</BunnyName>
-
-                    <Action>
-                        <BunnyLink to={`/bunny/${bunny._id}`}>
-                            <Button color="secondary" variant="contained">
-                                Edit
                             </Button>
                         </BunnyLink>
                     </Action>

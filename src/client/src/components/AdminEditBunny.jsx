@@ -43,6 +43,7 @@ export default function AdminEditBunny({ serverurl, isSaving = false, bunny, onS
             const url = `/api/user/admin/listnames`;
             const result = await FetchGet(url);
             if (result.status === "success") {
+                result.data.unshift({ id: "unassigned", name: "- unassigned -" });
                 setUsers(result.data);
             }
         };

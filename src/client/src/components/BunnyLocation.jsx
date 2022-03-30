@@ -43,7 +43,7 @@ export default function BunnyLocation({
                 <Box sx={{ position: "relative" }}>
                     <Button
                         disabled={isCreating}
-                        color="primary"
+                        color="secondary"
                         variant="contained"
                         sx={{
                             marginRight: "8px",

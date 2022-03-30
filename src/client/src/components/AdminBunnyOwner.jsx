@@ -13,6 +13,7 @@ export default function BunnyName({ userid, onUpdateState, onNextClicked }) {
             const url = `/api/user/admin/listnames`;
             const result = await FetchGet(url);
             if (result.status === "success") {
+                result.data.unshift({ id: "unassigned", name: "- unassigned -" });
                 setUsers(result.data);
             }
         };
@@ -62,7 +63,6 @@ export default function BunnyName({ userid, onUpdateState, onNextClicked }) {
                     Back
                 </Button>
                 <Button
-                    disabled={userid === ""}
                     color="primary"
                     variant="contained"
                     onClick={onNextClicked}

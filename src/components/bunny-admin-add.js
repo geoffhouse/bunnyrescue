@@ -5,11 +5,13 @@ const en = require("nanoid-good/locale/en");
 const nanoid = require("nanoid-good").nanoid(en);
 const Notifications = require("@services/notifications");
 const mongoCollection = require("@services/mongo-collection");
+const UserGetCurrent = require("@components/user-getcurrent");
 
 module.exports = async (req) => {
     try {
         const params = req.body;
         const id = nanoid(8);
+        const currentUser = await UserGetCurrent(req);
 
         if (!params.name) {
             Logger.error("bunny-admin-add: no name passed");
@@ -41,14 +43,6 @@ module.exports = async (req) => {
             return null;
         }
 
-        // get bunny user details
-        const usersCollection = await mongoCollection("users");
-        const user = await usersCollection.findOne({ _id: params.userid });
-        if (!user) {
-            Logger.error(`bunny-admin-add: invalid user id ${params.userid}`);
-            return null;
-        }
-
         // add values to params
         params["_id"] = id;
         params["userid"] = params.userid;
@@ -65,7 +59,9 @@ module.exports = async (req) => {
 
         if (results.result !== null && results.result.ok === 1) {
             new Notifications().send(
-                `${user.name} created bunny name: '${params.name}', message: '${params.message ? params.message : ""}'`
+                `${currentUser.name} created bunny name: '${params.name}', message: '${
+                    params.message ? params.message : ""
+                }'`
             );
             return id;
         }

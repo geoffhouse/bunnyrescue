@@ -18,6 +18,7 @@ const bunnyAdminDisable = require("@components/bunny-admin-disable");
 const bunnyAdminEnable = require("@components/bunny-admin-enable");
 const bunnyAdminDelete = require("@components/bunny-admin-delete");
 const bunnyRescue = require("@components/bunny-rescue");
+const bunnyAdopt = require("@components/bunny-adopt");
 const authUser = require("@middleware/auth-user");
 const authAdmin = require("@middleware/auth-admin");
 const hashResponse = require("@services/hash-response");
@@ -52,6 +53,18 @@ router.get(
     authUser,
     asyncHandler(async (req, res) => {
         const result = await bunnyRescue(req);
+        hashResponse(res, req, {
+            status: result ? "success" : "failure",
+            data: result,
+        });
+    })
+);
+
+router.get(
+    "/adopt/:bunnyid",
+    authUser,
+    asyncHandler(async (req, res) => {
+        const result = await bunnyAdopt(req);
         hashResponse(res, req, {
             status: result ? "success" : "failure",
             data: result,

@@ -22,11 +22,10 @@ module.exports = async (req) => {
             };
         }
 
-        // has the game ended? We check this first
-        if (serverDetails.endTime < Date.now()) {
-            new Notifications().send(`${user.name} tried to find bunny '${bunny.name}' after the game has ended`);
+        if (user.isAdmin) {
+            new Notifications().send(`${user.name} scanned bunny '${bunny.name}' as an admin`);
             return {
-                status: "ended",
+                status: "admin",
                 bunny: bunny,
             };
         }
@@ -34,9 +33,18 @@ module.exports = async (req) => {
         // if bunny belongs to current user, then we can't count it! Cheeky.
         // don't worry - the UI lets them edit it
         if (bunny["userid"] === user["_id"]) {
-            new Notifications().send(`${user.name} tried to find their own bunny '${bunny.name}'`);
+            new Notifications().send(`${user.name} scanned their own bunny '${bunny.name}'`);
             return {
                 status: "owned",
+                bunny: bunny,
+            };
+        }
+
+        // has the game ended? We check this first
+        if (serverDetails.endTime < Date.now()) {
+            new Notifications().send(`${user.name} tried to find bunny '${bunny.name}' after the game has ended`);
+            return {
+                status: "ended",
                 bunny: bunny,
             };
         }
