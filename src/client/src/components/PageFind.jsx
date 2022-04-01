@@ -96,61 +96,6 @@ export default function PageFind({ times }) {
     // notstarted
     // ended
 
-    if (status === "admin") {
-        return (
-            <Fade in={true}>
-                <Page>
-                    <RescueText>You're an admin, so you can't rescue bunnies</RescueText>
-                    <SmallBunny variant={bunny.colour} />
-                    <BunnyName>{bunny.name}</BunnyName>
-
-                    <Action>
-                        <BunnyLink to={`/admin/bunny/${bunny._id}`}>
-                            <Button color="secondary" variant="contained">
-                                Edit
-                            </Button>
-                        </BunnyLink>
-                    </Action>
-                </Page>
-            </Fade>
-        );
-    }
-
-    if (bunny.userid === "unassigned") {
-        return (
-            <Page>
-                <Box
-                    sx={{
-                        margin: "1rem",
-                        textAlign: "center",
-                        fontSize: "1.3rem",
-                    }}
-                >
-                    Adopt a bunny
-                </Box>
-                <SmallBunny variant="natural" />
-                <Box sx={{ textAlign: "center", fontSize: "16px", margin: "1rem" }}>
-                    This bunny doesn't have an owner. Would you like to adopt it?
-                </Box>
-
-                <Action>
-                    <BunnyLink to={`/bunny/adopt/${bunny._id}`}>
-                        <Button color="secondary" variant="contained" onClick={handleAdopt}>
-                            Adopt
-                        </Button>
-                    </BunnyLink>
-                </Action>
-
-                {!bunny.enabled && (
-                    <Box sx={{ marginTop: "1rem", textAlign: "center", fontSize: "16px", margin: "1rem" }}>
-                        Psst ... it's also currently disabled! <br />
-                        Once you've adopted it, just scan the QR code again to enable it.
-                    </Box>
-                )}
-            </Page>
-        );
-    }
-
     //TESTED OK
     if (status === "owned") {
         if (!bunny.enabled) {
@@ -207,6 +152,61 @@ export default function PageFind({ times }) {
                     </Action>
                 </Page>
             </Fade>
+        );
+    }
+
+    if (status === "admin") {
+        return (
+            <Fade in={true}>
+                <Page>
+                    <RescueText>You're an admin, so you can't rescue bunnies</RescueText>
+                    <SmallBunny variant={bunny.colour} />
+                    <BunnyName>{bunny.name}</BunnyName>
+
+                    <Action>
+                        <BunnyLink to={`/admin/bunny/${bunny._id}`}>
+                            <Button color="secondary" variant="contained">
+                                Edit
+                            </Button>
+                        </BunnyLink>
+                    </Action>
+                </Page>
+            </Fade>
+        );
+    }
+
+    if (bunny.userid === "unassigned") {
+        return (
+            <Page>
+                <Box
+                    sx={{
+                        margin: "1rem",
+                        textAlign: "center",
+                        fontSize: "1.3rem",
+                    }}
+                >
+                    Adopt a bunny
+                </Box>
+                <SmallBunny variant="natural" />
+                <Box sx={{ textAlign: "center", fontSize: "16px", margin: "1rem" }}>
+                    This bunny doesn't have an owner. Would you like to adopt it?
+                </Box>
+
+                <Action>
+                    <BunnyLink to={`/bunny/adopt/${bunny._id}`}>
+                        <Button color="secondary" variant="contained" onClick={handleAdopt}>
+                            Adopt
+                        </Button>
+                    </BunnyLink>
+                </Action>
+
+                {!bunny.enabled && (
+                    <Box sx={{ marginTop: "1rem", textAlign: "center", fontSize: "16px", margin: "1rem" }}>
+                        Psst ... it's also currently disabled! <br />
+                        Once you've adopted it, just scan the QR code again to enable it.
+                    </Box>
+                )}
+            </Page>
         );
     }
 
