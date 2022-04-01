@@ -17,6 +17,7 @@ import PageEditBunny from "./PageEditBunny";
 import PageAdminEditBunny from "./PageAdminEditBunny";
 import PagePrizes from "./PagePrizes";
 import PageSelectTeamName from "./PageSelectTeamName";
+import PageChangeTeamName from "./PageChangeTeamName";
 import PageAdminListBunnies from "./PageAdminListBunnies";
 import Loading from "./Loading";
 import PageRegister from "./PageRegister";
@@ -210,6 +211,9 @@ export default function App() {
                                     serverurl={server.serverurl}
                                     times={server.times}
                                 />
+                            </Route>
+                            <Route exact path="/teamname">
+                                <PageChangeTeamName user={user} servername={server.servername} />
                             </Route>
                             <Route exact path="/bunny/printall">
                                 <PagePrintAll

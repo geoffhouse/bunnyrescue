@@ -15,6 +15,7 @@ import HelpIcon from "@mui/icons-material/Help";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import GradeIcon from "@mui/icons-material/Grade";
 import { useCookies } from "react-cookie";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
 
 export default function Menu({ open = false, onClose, times }) {
     const [, removeCookie] = useCookies();
@@ -82,6 +83,12 @@ export default function Menu({ open = false, onClose, times }) {
                         <HelpIcon />
                     </ListItemIcon>
                     <ListItemText primary="Help / Questions" />
+                </ListItem>
+                <ListItem button component={Link} to="/teamname">
+                    <ListItemIcon>
+                        <AccountBoxIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Change Name" />
                 </ListItem>
                 <ListItem button onClick={Logout}>
                     <ListItemIcon>
