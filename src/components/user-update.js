@@ -4,6 +4,7 @@ const Logger = require("@services/logger");
 const mongoCollection = require("@services/mongo-collection");
 const UserGetId = require("@components/user-getid");
 const Notifications = require("@services/notifications");
+const UserGetCurrent = require("@components/user-getcurrent");
 
 // allows user to update their own details
 module.exports = async (req) => {
