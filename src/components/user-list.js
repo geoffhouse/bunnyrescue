@@ -4,7 +4,7 @@ const mongoCollection = require("@services/mongo-collection");
 
 module.exports = async () => {
     const usersCollection = await mongoCollection("users");
-    const users = await usersCollection?.find().toArray();
+    const users = await usersCollection?.find({ name: { $ne: "" }, isAdmin: false }).toArray();
 
     for (const i in users) {
         // calulcate the total

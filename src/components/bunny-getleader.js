@@ -9,7 +9,7 @@ module.exports = async () => {
     const results = [];
 
     for (const user of users) {
-        if (!user.isAdmin) {
+        if (!user.isAdmin && user.name !== "") {
             results.push({
                 ...user,
                 totalfound: user.found?.length ?? 0,
