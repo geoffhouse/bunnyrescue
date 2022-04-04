@@ -59,7 +59,7 @@ module.exports = async (req) => {
 
         if (results.result !== null && results.result.ok === 1) {
             new Notifications().send(
-                `${currentUser.name} created bunny name: '${params.name}', message: '${
+                `${currentUser.name} created bunny: '${params.name}', message: '${
                     params.message ? params.message : ""
                 }'`
             );

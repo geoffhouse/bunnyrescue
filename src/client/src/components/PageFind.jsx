@@ -175,7 +175,7 @@ export default function PageFind({ times }) {
         );
     }
 
-    if (bunny.userid === "unassigned") {
+    if (status === "unassigned") {
         return (
             <Page>
                 <Box
@@ -202,8 +202,8 @@ export default function PageFind({ times }) {
 
                 {!bunny.enabled && (
                     <Box sx={{ marginTop: "1rem", textAlign: "center", fontSize: "16px", margin: "1rem" }}>
-                        Psst ... it's also currently disabled! <br />
-                        Once you've adopted it, just scan the QR code again to enable it.
+                        <p>Psst ... it's also currently disabled!</p>
+                        <p>Once you've adopted it, you'll be able to edit it and change the name and location.</p>
                     </Box>
                 )}
             </Page>

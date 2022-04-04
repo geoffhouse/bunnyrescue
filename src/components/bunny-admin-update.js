@@ -57,7 +57,7 @@ module.exports = async (req) => {
         Logger.debug(`bunny-admin-update: updated bunny ${params._id} results: ` + JSON.stringify(results));
 
         if (results.result !== null && results.result.ok === 1) {
-            new Notifications().send(`${user.name} updated bunny name: '${params.name}'`);
+            new Notifications().send(`${user.name} updated bunny: '${params.name}'`);
             return true;
         }
         return false;

@@ -40,6 +40,14 @@ module.exports = async (req) => {
             };
         }
 
+        if (bunny["userid"] === "unassigned") {
+            new Notifications().send(`${user.name} scanned an unassigned bunny: '${bunny.name}'`);
+            return {
+                status: "unassigned",
+                bunny: bunny,
+            };
+        }
+
         // has the game ended? We check this first
         if (serverDetails.endTime < Date.now()) {
             new Notifications().send(`${user.name} tried to find bunny '${bunny.name}' after the game has ended`);
@@ -88,7 +96,7 @@ module.exports = async (req) => {
         Logger.info(`bunny-rescue: updated user ${user._id} results: ` + JSON.stringify(results));
 
         if (results.result !== null && results.result.ok === 1) {
-            new Notifications().send(`${user.name} found bunny name: '${bunny.name}'`);
+            new Notifications().send(`${user.name} found bunny: '${bunny.name}'`);
             return {
                 status: "added",
                 bunny: bunny,

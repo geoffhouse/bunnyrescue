@@ -44,7 +44,7 @@ module.exports = async (req) => {
         Logger.debug(`bunny-adopt: updated bunny id ${req.params.bunnyid} results: ${JSON.stringify(results)}`);
 
         if (results.result !== null && results.result.ok === 1) {
-            new Notifications().send(`${user.name} adopted bunny name: '${params.name}'`);
+            new Notifications().send(`${user.name} adopted bunny: '${params.name}'`);
             return true;
         }
         return false;
