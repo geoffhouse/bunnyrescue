@@ -30,7 +30,7 @@ module.exports = async (req) => {
         Logger.debug(`updated user ${userid} results: ${JSON.stringify(results)}`);
 
         if (results.result !== null && results.result.ok === 1) {
-            new Notifications().send(`${user.name} updated their user details`);
+            new Notifications().send(`${user.name ? user.name : user.email} updated their user details`);
             return true;
         }
         return false;
