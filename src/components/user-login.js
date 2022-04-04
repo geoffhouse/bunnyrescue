@@ -10,7 +10,9 @@ module.exports = async (req) => {
         const user = await usersCollection?.findOne({ _id: req.params.userid, key: req.params.userkey });
         if (user) {
             // the user might not have set a name yet. We'll use the email address if they haven't
-            new Notifications().send(`${user.name ? user.name : user.email} logged in successfully`);
+            new Notifications().send(
+                `${user.name ? `${user.name} (${user.email})` : user.email} logged in successfully`
+            );
         }
         return user;
     } catch (error) {
