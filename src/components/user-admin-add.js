@@ -44,7 +44,11 @@ module.exports = async (req) => {
         const results = await usersCollection?.insertOne(params);
         Logger.debug(`user-admin-add: new user ${id} results: ` + JSON.stringify(results));
         if (results.result !== null && results.result.ok === 1) {
-            new Notifications().send(`Created user name: '${params.name}', email: '${params.email}', id: '${id}'`);
+            new Notifications().send(
+                `${user.name} created user: ${params.name ? `'${params.name}', ` : ""}email: '${
+                    params.email
+                }', id: '${id}'`
+            );
             return id;
         }
         return false;

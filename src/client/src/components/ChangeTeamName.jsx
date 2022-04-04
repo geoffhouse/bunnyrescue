@@ -118,6 +118,10 @@ export default function PageChangeTeamName({ user }) {
                     </Box>
                 )}
 
+                <Box sx={{ marginTop: "1rem" }}>
+                    <TextField disabled={true} variant="filled" fullWidth value={user.email} label={"Email"} />
+                </Box>
+
                 <Box
                     sx={{
                         marginTop: "48px",
