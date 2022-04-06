@@ -22,14 +22,6 @@ module.exports = async (req) => {
             };
         }
 
-        if (user.isAdmin) {
-            new Notifications().send(`${user.name} scanned bunny '${bunny.name}' as an admin`);
-            return {
-                status: "admin",
-                bunny: bunny,
-            };
-        }
-
         // if bunny belongs to current user, then we can't count it! Cheeky.
         // don't worry - the UI lets them edit it
         if (bunny["userid"] === user["_id"]) {
@@ -44,6 +36,14 @@ module.exports = async (req) => {
             new Notifications().send(`${user.name} scanned an unassigned bunny: '${bunny.name}'`);
             return {
                 status: "unassigned",
+                bunny: bunny,
+            };
+        }
+
+        if (user.isAdmin) {
+            new Notifications().send(`${user.name} scanned bunny '${bunny.name}' as an admin`);
+            return {
+                status: "admin",
                 bunny: bunny,
             };
         }

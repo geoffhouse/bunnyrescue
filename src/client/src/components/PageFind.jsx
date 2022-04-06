@@ -159,7 +159,7 @@ export default function PageFind({ times }) {
         return (
             <Fade in={true}>
                 <Page>
-                    <RescueText>You're an admin, so you can't rescue bunnies</RescueText>
+                    <RescueText>You're an admin, so you can't rescue this bunny - but you can edit it.</RescueText>
                     <SmallBunny variant={bunny.colour} />
                     <BunnyName>{bunny.name}</BunnyName>
 
