@@ -6,9 +6,11 @@ const nanoid = require("nanoid-good").nanoid(en);
 const Notifications = require("@services/notifications");
 const mongoCollection = require("@services/mongo-collection");
 const crypto = require("crypto");
+const UserGetCurrent = require("@components/user-getcurrent");
 
 module.exports = async (req) => {
     const params = req.body;
+    const currentUser = await UserGetCurrent(req);
 
     if (!params.email) {
         Logger.error("user-admin-add: no email address passed");
@@ -45,7 +47,7 @@ module.exports = async (req) => {
         Logger.debug(`user-admin-add: new user ${id} results: ` + JSON.stringify(results));
         if (results.result !== null && results.result.ok === 1) {
             new Notifications().send(
-                `${user.name} created user: ${params.name ? `'${params.name}', ` : ""}email: '${
+                `${currentUser?.name} created user: ${params.name ? `'${params.name}', ` : ""}email: '${
                     params.email
                 }', id: '${id}'`
             );

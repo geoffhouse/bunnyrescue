@@ -55,7 +55,12 @@ module.exports = async (req) => {
     // now use the user id to get the email address:
     const result = await usersCollection?.findOne({ _id: userId });
     if (result) {
-        return await userEmailCode({ email: result.email, code: code });
+        if (await userEmailCode({ email: result.email, code: code })) {
+            new Notifications().send(`${email} requested a login code via email`);
+            return true;
+        } else {
+            Logger.error(`user-generateotk: failed to email code for user id ${userId}: ${code}`);
+        }
     }
 
     return false;

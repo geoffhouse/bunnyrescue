@@ -26,7 +26,9 @@ module.exports = async (req) => {
     const userkeysCollection = await mongoCollection("userkeys");
     const keyResult = await userkeysCollection.findOne({ userid: user._id, code: parseInt(otk) });
     if (!keyResult) {
-        new Notifications().send(`${user.name} failed to register a new browser - incorrect code entered`);
+        new Notifications().send(
+            `${user.name ? user.name : user.email} failed to register a new browser - incorrect code entered`
+        );
         Logger.warn(`user-checkotk: userkey ${otk} not found for user id ${user._id}`);
         return false;
     }
