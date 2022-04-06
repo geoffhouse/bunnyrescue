@@ -19,10 +19,13 @@ import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import FetchGet from "../services/FetchGet";
 import { useForceRefresh } from "./ForceRefresh";
 import ItemMenu from "./ItemMenu";
+import SendIcon from "@mui/icons-material/Send";
+import { useSnackbar } from "notistack";
 
 export default function ListBunnies({ times }) {
     const history = useHistory();
     const [forceRefresh, doForceRefresh] = useForceRefresh();
+    const { enqueueSnackbar } = useSnackbar();
 
     const users = useApiPoller({
         url: `/api/user/admin/list/`,
@@ -48,6 +51,23 @@ export default function ListBunnies({ times }) {
         const url = `/api/user/admin/enable/${encodeURIComponent(user._id)}`;
         await FetchGet(url);
         doForceRefresh();
+    };
+
+    const handleWelcomeEmailClicked = async (user) => {
+        const url = `/api/user/admin/welcome/${user.email}`;
+        try {
+            const result = await FetchGet(url);
+            if (result && result.status === "success") {
+                enqueueSnackbar("Sent welcome email to user", {
+                    variant: "success",
+                });
+            }
+        } catch (error) {
+            enqueueSnackbar("Failed to send welcome email to user", {
+                variant: "error",
+            });
+            console.error(error);
+        }
     };
 
     if (users.status !== "success") {
@@ -210,6 +230,14 @@ export default function ListBunnies({ times }) {
                                                 disabled: (user) => !user.enabled,
                                                 icon: <ToggleOffIcon fontSize="small" />,
                                                 onClick: (event, item) => handleDisableClicked(item),
+                                            },
+                                            {
+                                                title: "-",
+                                            },
+                                            {
+                                                title: "Resend Welcome",
+                                                icon: <SendIcon fontSize="small" />,
+                                                onClick: (event, item) => handleWelcomeEmailClicked(item),
                                             },
                                         ]}
                                     />
