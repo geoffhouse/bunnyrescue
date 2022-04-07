@@ -21,7 +21,7 @@ const StyledP = styled("p")(({ theme }) => ({
 export default function EditBunny({ serverurl, isSaving = false, bunny, onSave, colour }) {
     const [qrCode, setQrCode] = React.useState(null);
     const [localBunny, setLocalBunny] = React.useState(bunny);
-    const [debouncedBunny] = useDebounce(localBunny, 1000);
+    const [debouncedBunnyName] = useDebounce(localBunny.name, 1000);
 
     React.useEffect(() => {
         const getQrCode = async () => {
@@ -55,13 +55,6 @@ export default function EditBunny({ serverurl, isSaving = false, bunny, onSave, 
 
     const handleMessageChanged = (event) => {
         setLocalBunny({ ...localBunny, message: event.target.value });
-    };
-
-    const renderPrintLinks = () => {
-        if (qrCode) {
-            return <PdfDownloadLinks colour={colour} bunnyName={debouncedBunny.name} qrcode={qrCode} />;
-        }
-        return null;
     };
 
     return (
@@ -109,8 +102,15 @@ export default function EditBunny({ serverurl, isSaving = false, bunny, onSave, 
 
             <MapSelect geolocate={false} location={localBunny.location} onChange={handleMapChanged} />
 
-            <StyledP>Print the bunny code on A4 paper:</StyledP>
-            {renderPrintLinks()}
+            {React.useMemo(
+                () => (
+                    <>
+                        <StyledP>Print the bunny code on A4 paper:</StyledP>
+                        {qrCode && <PdfDownloadLinks bunnyName={debouncedBunnyName} qrcode={qrCode} />}
+                    </>
+                ),
+                [debouncedBunnyName, qrCode]
+            )}
 
             <Box
                 sx={{

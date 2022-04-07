@@ -13,6 +13,7 @@ import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import MenuItem from "@mui/material/MenuItem";
 import FetchGet from "../services/FetchGet";
+import { useDebounce } from "use-debounce";
 
 const StyledP = styled("p")(({ theme }) => ({
     marginTop: "32px",
@@ -23,6 +24,7 @@ export default function AdminEditBunny({ serverurl, isSaving = false, bunny, onS
     const [qrCode, setQrCode] = React.useState(null);
     const [localBunny, setLocalBunny] = React.useState(bunny);
     const [users, setUsers] = React.useState([]);
+    const [debouncedBunnyName] = useDebounce(localBunny.name, 1000);
 
     React.useEffect(() => {
         const getQrCode = async () => {
@@ -73,13 +75,6 @@ export default function AdminEditBunny({ serverurl, isSaving = false, bunny, onS
 
     const handleMessageChanged = (event) => {
         setLocalBunny({ ...localBunny, message: event.target.value });
-    };
-
-    const renderPrintLinks = () => {
-        if (qrCode) {
-            return <PdfDownloadLinks colour={colour} bunnyName={localBunny.name} qrcode={qrCode} />;
-        }
-        return null;
     };
 
     return (
@@ -147,8 +142,15 @@ export default function AdminEditBunny({ serverurl, isSaving = false, bunny, onS
 
             <MapSelect geolocate={false} location={localBunny.location} onChange={handleMapChanged} />
 
-            <StyledP>Print the bunny code on A4 paper:</StyledP>
-            {renderPrintLinks()}
+            {React.useMemo(
+                () => (
+                    <>
+                        <StyledP>Print the bunny code on A4 paper:</StyledP>
+                        {qrCode && <PdfDownloadLinks bunnyName={debouncedBunnyName} qrcode={qrCode} />}
+                    </>
+                ),
+                [debouncedBunnyName, qrCode]
+            )}
 
             <Box
                 sx={{
