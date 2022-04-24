@@ -3,12 +3,32 @@
 const mongoCollection = require("@services/mongo-collection");
 const Logger = require("@services/logger");
 const UserGetCurrent = require("@components/user-getcurrent");
+// const PDFDocument = require("pdfkit");
+const PDFDocument = require("pdfkit-table");
 
-module.exports = async (req) => {
+module.exports = async (req, res) => {
     const user = await UserGetCurrent(req);
     if (!user.isAdmin) {
         return false;
     }
+
+    // create new PDF doc
+    const doc = new PDFDocument({ margin: 20, bufferPages: true, autoFirstPage: false, size: "A4" });
+
+    // set up PDF event handlers
+    let buffers = [];
+    doc.on("data", buffers.push.bind(buffers));
+    doc.on("end", () => {
+        let pdfData = Buffer.concat(buffers);
+        res.writeHead(200, {
+            "Content-Length": Buffer.byteLength(pdfData),
+            "Content-Type": "application/pdf",
+        }).end(pdfData);
+    });
+
+    doc.addPage({
+        margin: 20,
+    });
 
     const usersCollection = await mongoCollection("users");
     const dbUsers = await usersCollection?.find().toArray();
@@ -32,12 +52,12 @@ module.exports = async (req) => {
         indexedUsers[eachUser._id] = {
             _id: eachUser._id,
             name: eachUser.name,
+            isAdmin: eachUser.isAdmin,
             email: eachUser.email,
             found: eachUser.found,
             foundCount: eachUser.found ? eachUser.found.length : 0,
             owned: [],
             ownedCount: 0,
-            totalCount: eachUser.found ? eachUser.found.length : 0,
         };
     }
 
@@ -65,13 +85,36 @@ module.exports = async (req) => {
 
     indexedUsers = Object.values(indexedUsers);
 
-    indexedUsers.sort((a, b) => (a.totalCount > b.totalCount ? -1 : 1));
+    indexedUsers.sort((a, b) => (a.foundCount > b.foundCount ? -1 : 1));
 
-    let output = "id,name,email,totalfound,totalhidden,total\n";
+    const table = {
+        title: "Users",
+        headers: [
+            {
+                label: "Position",
+                property: null,
+                width: 50,
+                renderer: (value, indexColumn, indexRow, row) => {
+                    return row.foundCount > 0 ? indexRow + 1 : "";
+                },
+            },
+            { label: "Name", property: "name", width: 150, renderer: null },
+            {
+                label: "Admin",
+                property: "isAdmin",
+                width: 50,
+                renderer: (value) => {
+                    return value ? "YES" : "";
+                },
+            },
+            { label: "Email", property: "email", width: 150, renderer: null },
+            { label: "Found", property: "foundCount", width: 70, renderer: null },
+            { label: "Owned", property: "ownedCount", width: 70, renderer: null },
+        ],
+        datas: indexedUsers,
+    };
 
-    for (let eachUser of indexedUsers) {
-        output += `${eachUser._id},${eachUser.name},${eachUser.email},${eachUser.foundCount},${eachUser.ownedCount},${eachUser.totalCount}\n`;
-    }
+    doc.table(table);
 
-    return output;
+    doc.end();
 };

@@ -29,8 +29,8 @@ router.get(
     "/admin/report",
     authAdmin,
     asyncHandler(async (req, res) => {
-        const result = await userAdminReport(req);
-        res.send(result);
+        const result = await userAdminReport(req, res);
+        // res.send(result);
     })
 );
 

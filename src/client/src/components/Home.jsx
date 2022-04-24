@@ -19,6 +19,8 @@ import SupervisedUserCircleIcon from "@mui/icons-material/SupervisedUserCircle";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import QrCodeIcon from "@mui/icons-material/QrCode";
 import MapIcon from "@mui/icons-material/Map";
+import SummarizeIcon from "@mui/icons-material/Summarize";
+import axios from "axios";
 
 const HeaderText = styled("div")(({ theme }) => ({
     "@media (max-width:310px)": {
@@ -75,6 +77,11 @@ export default function Home({ times, serverprize }) {
         url: `/api/user/getposition/`,
         interval: 4000,
     });
+
+    const handleReportClicked = async () => {
+        const response = await axios.get("/api/user/admin/report", { responseType: "blob" });
+        window.open(URL.createObjectURL(response.data));
+    };
 
     const renderCongrats = () => {
         if (times.ended) {
@@ -499,6 +506,20 @@ export default function Home({ times, serverprize }) {
                                     isAdmin
                                 ></HomeCard>
                             </HomeLink>
+                        </GridItem>
+                    </Slide>
+                )}
+                {user?.data?.isAdmin && (
+                    <Slide in={true} direction="right">
+                        <GridItem item xs={12}>
+                            <HomeCard
+                                nolink
+                                onClick={handleReportClicked}
+                                title="Create Report"
+                                subtitle="Create full user report showing total bunnies found"
+                                icon={SummarizeIcon}
+                                isAdmin
+                            ></HomeCard>
                         </GridItem>
                     </Slide>
                 )}

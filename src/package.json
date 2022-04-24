@@ -34,6 +34,8 @@
         "nanoid-good": "^3.1.0",
         "node-prowl": "^0.1.8",
         "node-pushover": "^1.0.0",
+        "pdfkit": "^0.13.0",
+        "pdfkit-table": "^0.1.86",
         "rotating-file-stream": "^2.1.5",
         "winston": "^3.3.3",
         "winston-daily-rotate-file": "^4.5.0"

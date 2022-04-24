@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
-export default function HomeCard({ icon, nolink = false, title, subtitle, isAdmin = false }) {
+export default function HomeCard({ icon, onClick, nolink = false, title, subtitle, isAdmin = false }) {
     const Icon = icon;
 
     return (
@@ -17,6 +17,7 @@ export default function HomeCard({ icon, nolink = false, title, subtitle, isAdmi
                 backgroundColor: isAdmin ? "primary.main" : "white",
             }}
             variant="outlined"
+            onClick={onClick}
         >
             <CardContent
                 component="div"
