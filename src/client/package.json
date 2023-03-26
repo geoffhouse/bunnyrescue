@@ -22,7 +22,7 @@
         "dompurify": "^2.3.6",
         "javascript-time-ago": "^2.3.13",
         "kofi-button": "^1.1.1",
-        "leaflet": "^1.7.1",
+        "leaflet": "^1.9.3",
         "leaflet.locatecontrol": "^0.76.0",
         "mui-image": "^1.0.4",
         "notistack": "^2.0.3",
