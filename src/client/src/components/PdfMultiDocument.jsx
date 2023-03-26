@@ -9,25 +9,25 @@ export default function PdfDocument({ bunnies }) {
         bunnyText: {
             position: "absolute",
             fontSize: 8,
-            left: "0px",
-            top: "180px",
+            left: "40px",
+            top: "260px",
             color: "#444",
             width: "200px",
             textAlign: "center",
         },
         qrcodeSmall: {
             position: "absolute",
-            left: "72px",
-            width: "60px",
-            top: "92px",
+            left: "106px",
+            width: "92px",
+            top: "142px",
             zIndex: 100,
         },
         bunnySmall: {
             position: "absolute",
-            width: "120px",
-            left: "40px",
+            width: "180px",
+            left: "60px",
             zIndex: 999,
-            top: "10px",
+            top: "20px",
         },
     });
 
@@ -36,7 +36,7 @@ export default function PdfDocument({ bunnies }) {
         let row = 0;
         let col = 0;
         for (let bunnyIndex = firstIndex; bunnyIndex < lastIndex; bunnyIndex++) {
-            if (col === 3) {
+            if (col === 2) {
                 col = 0;
                 row += 1;
             }
@@ -46,8 +46,8 @@ export default function PdfDocument({ bunnies }) {
                         key={bunnyIndex}
                         style={{
                             position: "absolute",
-                            left: `${col * 33}%`,
-                            top: `${row * 25}%`,
+                            left: `${col * 50}%`,
+                            top: `${row * 33}%`,
                         }}
                     >
                         <View style={styles.bunnySmall}>

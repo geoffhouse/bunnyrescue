@@ -3,7 +3,7 @@ import Navigation from "./Navigation";
 import BackBar from "./BackBar";
 import ContentWrapper from "./ContentWrapper";
 import Button from "@mui/material/Button";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import PdfMultiDocument from "./PdfMultiDocument";
 import { isMobile } from "react-device-detect";
 import PrintIcon from "@mui/icons-material/Print";
@@ -69,6 +69,9 @@ export default function PagePrintAll({ serverurl, user, times }) {
                                 marginBottom: "24px",
                             }}
                         >
+                            {/* <PDFViewer style={{ height: "800px", width: "900px" }}>
+                                <PdfMultiDocument bunnies={bunnies} />
+                            </PDFViewer> */}
                             <DownloadButton
                                 document={<PdfMultiDocument bunnies={bunnies} />}
                                 fileName={`bunnyrescue-multiple.pdf`}
