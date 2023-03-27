@@ -70,7 +70,7 @@ export default function PdfDocument({ bunnies }) {
     const renderPages = () => {
         const pages = [];
 
-        const bunniesPerPage = 12;
+        const bunniesPerPage = 6;
         const pageCount = Math.floor(bunnies.length / bunniesPerPage);
         for (let page = 0; page < pageCount + 1; page++) {
             const firstIndex = page * bunniesPerPage;
