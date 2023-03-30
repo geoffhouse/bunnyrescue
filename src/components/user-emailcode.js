@@ -20,7 +20,7 @@ module.exports = async ({ email, code }) => {
         };
         const response = await sgMail.send(msg);
         if (response[0]?.statusCode === 202 || response[0]?.statusCode === 200) {
-            Logger.info(`user-emailcode: sent email code to ${email} ok`);
+            Logger.info(`user-emailcode: sent email code '${code}' to '${email}' ok`);
             return true;
         }
         console.error(response);

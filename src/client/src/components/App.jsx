@@ -134,13 +134,13 @@ export default function App() {
                             <Route exact path="/">
                                 <PageRegister />
                             </Route>
+                            <Route exact path="/find/:bunnyid">
+                                <PageRegister />
+                            </Route>
                             <Route exact path="/:email">
                                 <PageRegister />
                             </Route>
                             <Route exact path="/:email/:code">
-                                <PageRegister />
-                            </Route>
-                            <Route exact path="/find/:bunnyid">
                                 <PageRegister />
                             </Route>
                         </Switch>
