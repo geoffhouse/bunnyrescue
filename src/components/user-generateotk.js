@@ -40,26 +40,33 @@ module.exports = async (req) => {
         userId = user._id;
     }
 
-    // we've got a valid user ID now - we'll generate a code
-    const code = Math.floor(100000 + Math.random() * 900000);
     const userkeysCollection = await mongoCollection("userkeys");
-    await mongoCreateIndex(userkeysCollection, "timestamp", { expireAfterSeconds: 120 });
+    // check if there's an existing code - we don't want to generate another one - it confuses the users
+    const existingCode = await userkeysCollection.findOne({ userid: userId });
+    if (existingCode) {
+        new Notifications().send(`Not sending another login code to ${email} because one already exists`);
+        return true;
+    } else {
+        // we've got a valid user ID now - we'll generate a code
+        const code = Math.floor(100000 + Math.random() * 900000);
+        await mongoCreateIndex(userkeysCollection, "timestamp", { expireAfterSeconds: 600 });
 
-    await userkeysCollection.insertOne({
-        userid: userId,
-        code: code,
-        timestamp: new Date(),
-    });
-    Logger.info(`user-generateotk: generated code for user id ${userId}: ${code}`);
+        await userkeysCollection.insertOne({
+            userid: userId,
+            code: code,
+            timestamp: new Date(),
+        });
+        Logger.info(`user-generateotk: generated code for user id ${userId}: ${code}`);
 
-    // now use the user id to get the email address:
-    const result = await usersCollection?.findOne({ _id: userId });
-    if (result) {
-        if (await userEmailCode({ email: result.email, code: code })) {
-            new Notifications().send(`${email} requested a login code via email`);
-            return true;
-        } else {
-            Logger.error(`user-generateotk: failed to email code for user id ${userId}: ${code}`);
+        // now use the user id to get the email address:
+        const result = await usersCollection?.findOne({ _id: userId });
+        if (result) {
+            if (await userEmailCode({ email: result.email, code: code })) {
+                new Notifications().send(`${email} requested a login code via email - sending '${code}'`);
+                return true;
+            } else {
+                Logger.error(`user-generateotk: failed to email code for user id ${userId}: ${code}`);
+            }
         }
     }
 

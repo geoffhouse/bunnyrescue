@@ -27,16 +27,19 @@ module.exports = async (req) => {
     const keyResult = await userkeysCollection.findOne({ userid: user._id, code: parseInt(otk) });
     if (!keyResult) {
         new Notifications().send(
-            `${user.name ? user.name : user.email} failed to register a new browser - incorrect code entered`
+            `${user.name ? user.name : user.email} failed to register a new browser - incorrect code '${otk}' entered`
         );
-        Logger.warn(`user-checkotk: userkey ${otk} not found for user id ${user._id}`);
+        Logger.warn(`user-checkotk: userkey ${otk} not found for user ${user.name ? user.name : user.email}`);
         return false;
     }
 
-    Logger.info(`user-checkotk: userkey ${otk} found OK for user id ${user._id}`);
+    Logger.info(`user-checkotk: userkey ${otk} found OK for user ${user.name ? user.name : user.email}`);
 
     // we're happy - add the browser to the user (for records)
     await userAddBrowser(req, user);
+
+    // and remove any one-time-keys
+    await userkeysCollection.deleteOne({ userid: user._id });
 
     // we're happy with the result, pass back the user id and key
     return {

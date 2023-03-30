@@ -90,6 +90,7 @@ export default function RegisterEmail({ code = "", email, onUpdateState, onBackC
                         onChange={handleTextFieldChanged}
                         type="number"
                     />
+                    <p>Please check your spam folder, and note that it may take a few minutes to arrive...</p>
 
                     <Box
                         sx={{
