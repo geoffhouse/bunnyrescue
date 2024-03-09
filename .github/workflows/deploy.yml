@@ -64,8 +64,8 @@ jobs:
                   platforms: ${{ matrix.architecture}}
                   push: ${{ github.event_name != 'pull_request' }}
                   tags: |
-                      ${{env.registry}}/bunnyrescue/bunnyrescue-app:latest
-                      ${{env.registry}}/bunnyrescue/bunnyrescue-app:${{steps.app-version.outputs.current-version}}
+                      ${{env.registry}}/geoffhouse/bunnyrescue-app:latest
+                      ${{env.registry}}/geoffhouse/bunnyrescue-app:${{steps.app-version.outputs.current-version}}
                   outputs: type=registry,registry.insecure=true
                   labels: |
                       author=${{github.actor}}
