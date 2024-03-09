@@ -1,13 +1,13 @@
 FROM node:16
 
-WORKDIR /home/node/bunnyrescue
+WORKDIR /app
 COPY . .
 RUN npm install --legacy-peer-deps
 
-WORKDIR /home/node/bunnyrescue/client
+WORKDIR /app/client
 RUN npm install --legacy-peer-deps
 
 RUN npm run build
 
-WORKDIR /home/node/bunnyrescue
+WORKDIR /app
 CMD [ "sh", "-c", "npm run $ENVIRONMENT" ]
