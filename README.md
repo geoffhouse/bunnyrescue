@@ -45,4 +45,84 @@ Brace yourself - it's a lot of notifications!
 
 # Installation
 
-//TODO
+These instructions are for DigitalOcean. It's fairly straightforward to set it up for another provide if you know what you're doing.
+
+## Create a VM
+
+Go to https://cloud.digitalocean.com and set up a new account and team.
+
+![alt text](.github/assets/image1.png)
+
+Create a new droplet in the appropriate region. We recommend:
+
+-   Ubuntu 22.04 LTS
+-   single shared CPU
+-   1GB RAM
+-   25GB SSD Disk
+
+## Security
+
+One this is done you'll need to restrict access to SSH/HTTP only.
+Go to the network section in the droplet and edit the firewall to create some rules.
+
+For good security you may wish to restrict SSH access to your own IP address, and HTTP/HTTPS to everywhere.
+
+## Pre-requisites
+
+You'll need:
+
+-   git
+-   docker engine: https://docs.docker.com/engine/install/
+
+Copy the following docker-compose.yml into a suitable folder (maybe `/opt/bunnyrescue`):
+
+```
+# NOTE: this docker-compose file is for production environments only
+
+version: "3.0"
+
+networks:
+    bunnyrescue:
+        driver: bridge
+
+services:
+    app:
+        container_name: bunnyrescue
+        image: ghcr.io/geoffhouse/bunnyrescue:latest
+        restart: always
+        volumes:
+            - ./src:/home/node/bunnyrescue
+            - ./src/templates:/home/node/bunnyrescue/templates
+        environment:
+            LOGFOLDER: logs
+            LOGNAME: bunnyrescue
+            CONSOLE_LOGLEVEL: info
+            ENVIRONMENT: production
+            SENDGRID_APIKEY: "your_sendgrid_api_key_here"
+            FROM_EMAIL: "noreply@yoursendgridregisteredemail.domain"
+            HOME_LAT: "51.000"
+            HOME_LONG: "0.000"
+            SERVER_NAME: "Your bunny rescue"
+            SERVER_URL: "https://your.domain.name"
+            PRIZE_LEVEL: 10
+            START_TIME: "__START_JAVACRIPT_TIMESTAMP__"
+            END_TIME: "__END_JAVACRIPT_TIMESTAMP__"
+            ADMIN_EMAIL: "your@admin.email.address"
+            PUSHOVER_APPTOKEN:
+            PUSHOVER_USERKEY:
+            PROWL_TOKEN:
+            SLACK_WEBHOOK:
+        networks:
+            - bunnyrescue
+        ports:
+            - 4100:4100
+            - 3000:3000
+    mongo:
+        image: mongo:latest
+        restart: unless-stopped
+        container_name: bunnyrescue-mongo
+        networks:
+            - bunnyrescue
+        ports:
+            - 27017:27017
+```
