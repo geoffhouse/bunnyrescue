@@ -1,7 +1,7 @@
 name: Publish Emu app to docker registry
 
 env:
-    regsitry: "ghcr.io"
+    registry: "ghcr.io"
 
 on:
     workflow_dispatch:
