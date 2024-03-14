@@ -4,22 +4,24 @@ import BackBar from "./BackBar";
 import BunnyName from "./BunnyName";
 import BunnyLocation from "./BunnyLocation";
 import BunnyStepper from "./BunnyStepper";
-import BunnyPrint from "./BunnyPrint";
+import BunnyAdoptDone from "./BunnyAdoptDone";
 import ContentWrapper from "./ContentWrapper";
 import { useHistory } from "react-router-dom";
 import { useSnackbar } from "notistack";
+import { useParams } from "react-router-dom";
 
-export default function PageAddBunny({ user, serverurl, servername, serverlocation, times }) {
+export default function PageAdopt({ user, serverurl, servername, serverlocation, times }) {
     const history = useHistory();
+    const params = useParams();
     const [step, setStep] = React.useState(0);
     const [isCreating, setIsCreating] = React.useState(false);
     const { enqueueSnackbar } = useSnackbar();
 
     const [bunny, setBunny] = React.useState({
+        _id: params.bunnyid,
         name: "",
         colour: "natural",
         location: null,
-        bunnyId: null,
     });
 
     const handleUpdateState = (key, value) => {
@@ -30,17 +32,10 @@ export default function PageAddBunny({ user, serverurl, servername, serverlocati
         history.push(`/`);
     };
 
-    const createBunny = async () => {
+    const adoptBunny = async () => {
         setIsCreating(true);
 
         const url = "/api/bunny/add/";
-
-        const postData = {
-            name: bunny.name,
-            location: bunny.location,
-            colour: bunny.colour,
-            message: bunny.message,
-        };
 
         try {
             const res = await fetch(url, {
@@ -49,19 +44,15 @@ export default function PageAddBunny({ user, serverurl, servername, serverlocati
                     "Content-Type": "application/json",
                 },
                 method: "POST",
-                body: JSON.stringify(postData),
+                body: JSON.stringify(bunny),
             });
             const result = await res.json();
             if (result.status === "success") {
-                const bunnyId = result.data;
-                if (bunnyId !== null) {
-                    setBunny({ ...bunny, bunnyId: bunnyId });
-                    setStep(2);
-                } else {
-                    enqueueSnackbar("Failed to create bunny", {
-                        variant: "error",
-                    });
-                }
+                setStep(2);
+            } else {
+                enqueueSnackbar("Failed to create bunny", {
+                    variant: "error",
+                });
             }
         } catch (error) {
             // an error
@@ -75,7 +66,7 @@ export default function PageAddBunny({ user, serverurl, servername, serverlocati
 
     return (
         <>
-            <BackBar title="Hide a Bunny"></BackBar>
+            <BackBar title="Adopt a Bunny"></BackBar>
             <ContentWrapper
                 scrollable
                 sx={{
@@ -83,7 +74,7 @@ export default function PageAddBunny({ user, serverurl, servername, serverlocati
                     padding: "1rem",
                 }}
             >
-                <BunnyStepper step={step} const steps={["Customise", "Location", "Print Code"]}></BunnyStepper>
+                <BunnyStepper step={step} const steps={["Customise", "Location", "Adopted"]}></BunnyStepper>
                 {step === 0 && (
                     <BunnyName
                         onNextClicked={() => setStep(1)}
@@ -95,22 +86,14 @@ export default function PageAddBunny({ user, serverurl, servername, serverlocati
                 {step === 1 && (
                     <BunnyLocation
                         onBackClicked={() => setStep(0)}
-                        onNextClicked={createBunny}
+                        onNextClicked={adoptBunny}
                         onUpdateState={(key, value) => handleUpdateState(key, value)}
                         value={bunny.location}
                         isCreating={isCreating}
                         serverlocation={serverlocation}
                     />
                 )}
-                {step === 2 && (
-                    <BunnyPrint
-                        serverurl={serverurl}
-                        onNextClicked={handleFinishClicked}
-                        bunnyId={bunny.bunnyId}
-                        colour={bunny.colour}
-                        name={bunny.name}
-                    />
-                )}
+                {step === 2 && <BunnyAdoptDone onNextClicked={handleFinishClicked} times={times} />}
             </ContentWrapper>
             <Navigation></Navigation>
         </>

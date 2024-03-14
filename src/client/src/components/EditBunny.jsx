@@ -6,12 +6,9 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import MapSelect from "./MapSelect";
 import ColourPicker from "./ColourPicker";
-import PdfDownloadLinks from "./PdfDownloadLinks";
 import CircularProgress from "@mui/material/CircularProgress";
-import QRCode from "qrcode";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
-import { useDebounce } from "use-debounce";
 
 const StyledP = styled("p")(({ theme }) => ({
     marginTop: "32px",
@@ -19,23 +16,7 @@ const StyledP = styled("p")(({ theme }) => ({
 }));
 
 export default function EditBunny({ serverurl, isSaving = false, bunny, onSave, colour }) {
-    const [qrCode, setQrCode] = React.useState(null);
     const [localBunny, setLocalBunny] = React.useState(bunny);
-    const [debouncedBunnyName] = useDebounce(localBunny.name, 1000);
-
-    React.useEffect(() => {
-        const getQrCode = async () => {
-            const text = `${serverurl}/find/${encodeURIComponent(localBunny._id)}`;
-            try {
-                const result = await QRCode.toDataURL(text);
-                setQrCode(result);
-            } catch (err) {
-                console.error(err);
-            }
-        };
-
-        getQrCode();
-    }, [localBunny, serverurl]);
 
     const handleNameChanged = (event) => {
         setLocalBunny({ ...localBunny, name: event.target.value });
@@ -101,16 +82,6 @@ export default function EditBunny({ serverurl, isSaving = false, bunny, onSave, 
             <StyledP>Click the map to change where the bunny is hidden</StyledP>
 
             <MapSelect geolocate={false} location={localBunny.location} onChange={handleMapChanged} />
-
-            {React.useMemo(
-                () => (
-                    <>
-                        <StyledP>Print the bunny code on A4 paper:</StyledP>
-                        {qrCode && <PdfDownloadLinks bunnyName={debouncedBunnyName} qrcode={qrCode} />}
-                    </>
-                ),
-                [debouncedBunnyName, qrCode]
-            )}
 
             <Box
                 sx={{

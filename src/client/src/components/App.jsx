@@ -3,14 +3,14 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import PageHome from "./PageHome";
 import PageMap from "./PageMap";
 import PageFind from "./PageFind";
+import PageAdoptBunny from "./PageAdoptBunny";
 import PageLeaderboard from "./PageLeaderboard";
-import PageAddBunny from "./PageAddBunny";
 import PageScanBunny from "./PageScanBunny";
-import PageAdminAddBunny from "./PageAdminAddBunny";
 import PageAdminAddUser from "./PageAdminAddUser";
 import PageAdminEditUser from "./PageAdminEditUser";
 import PageAdminListUsers from "./PageAdminListUsers";
 import PagePrintAll from "./PagePrintAll";
+import PagePrintNew from "./PagePrintNew";
 import PagePrivacy from "./PagePrivacy";
 import PageFaq from "./PageFaq";
 import PageEditBunny from "./PageEditBunny";
@@ -224,8 +224,28 @@ export default function App() {
                                     times={server.times}
                                 />
                             </Route>
+                            {user.isAdmin && (
+                                <Route exact path="/admin/bunny/printnew">
+                                    <PagePrintNew
+                                        user={user}
+                                        serverurl={server.serverurl}
+                                        servername={server.servername}
+                                        serverlocation={server.serverlocation}
+                                        times={server.times}
+                                    />
+                                </Route>
+                            )}
                             <Route exact path="/bunny/:bunnyid">
                                 <PageEditBunny
+                                    user={user}
+                                    servername={server.servername}
+                                    serverurl={server.serverurl}
+                                    serverlocation={server.serverlocation}
+                                    times={server.times}
+                                />
+                            </Route>
+                            <Route exact path="/bunny/adopt/:bunnyid">
+                                <PageAdoptBunny
                                     user={user}
                                     servername={server.servername}
                                     serverurl={server.serverurl}
@@ -242,26 +262,6 @@ export default function App() {
                             <Route exact path="/leaderboard">
                                 <PageLeaderboard user={user} servername={server.servername} />
                             </Route>
-                            <Route exact path="/addbunny">
-                                <PageAddBunny
-                                    user={user}
-                                    serverurl={server.serverurl}
-                                    servername={server.servername}
-                                    serverlocation={server.serverlocation}
-                                    times={server.times}
-                                />
-                            </Route>
-                            {user.isAdmin && (
-                                <Route exact path="/admin/addbunny">
-                                    <PageAdminAddBunny
-                                        user={user}
-                                        serverurl={server.serverurl}
-                                        servername={server.servername}
-                                        serverlocation={server.serverlocation}
-                                        times={server.times}
-                                    />
-                                </Route>
-                            )}
                             <Route exact path="/register">
                                 <PageRegister user={user} servername={server.servername} />
                             </Route>

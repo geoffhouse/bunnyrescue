@@ -10,7 +10,7 @@ import { styled } from "@mui/material/styles";
 import TimeAgo from "timeago-react";
 import FetchGet from "../services/FetchGet";
 
-const StyledP = styled("p")(({ theme }) => ({
+const StyledP = styled("p")(() => ({
     marginTop: "32px",
     color: "#606060",
 }));

@@ -26,10 +26,7 @@ export default function BunnyName({ name, colour, message, onUpdateState, onNext
 
     return (
         <>
-            <p>
-                Choose a bunny name. This won't be visible on the printed sheet, but will be revealed when someone scans
-                it
-            </p>
+            <p>Choose a name - this will be revealed when someone scans your bunny.</p>
             <p>Keep it simple, or make it complicated, but please make sure you don't use anyone's real name!</p>
 
             <form noValidate autoComplete="off">

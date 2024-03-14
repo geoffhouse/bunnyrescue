@@ -21,11 +21,11 @@ export default function BunnyLocation({
 
     return (
         <>
+            <p>Now place a pin on the map to show roughly where the bunny will be displayed in the real world.</p>
             <p>
-                Now you need to put a pin on the map to show roughly where the printed code will be displayed in real
-                life.
+                On a tree, stapled to your fence, on a lamp post. Make it as easy or as cunning as you like, but keep on
+                public land and don't damage anyone's property!
             </p>
-            <p>On a tree, stapled to your fence, on a lamp post. Make it as easy or as cunning as you like.</p>
 
             <MapSelect
                 geolocate={true}
@@ -63,7 +63,7 @@ export default function BunnyLocation({
                             marginRight: "8px",
                         }}
                     >
-                        Create
+                        Finish
                     </Button>
                     {isCreating && (
                         <CircularProgress

@@ -11,6 +11,7 @@ const bunnyAdd = require("@components/bunny-add");
 const bunnyAdminAdd = require("@components/bunny-admin-add");
 const bunnyUpdate = require("@components/bunny-update");
 const bunnyAdminUpdate = require("@components/bunny-admin-update");
+const bunnyNewList = require("@components/bunny-newlist");
 const bunnyGet = require("@components/bunny-get");
 const bunnyGetAdmin = require("@components/bunny-admin-get");
 const bunnyDisable = require("@components/bunny-disable");
@@ -18,7 +19,6 @@ const bunnyAdminDisable = require("@components/bunny-admin-disable");
 const bunnyAdminEnable = require("@components/bunny-admin-enable");
 const bunnyAdminDelete = require("@components/bunny-admin-delete");
 const bunnyRescue = require("@components/bunny-rescue");
-const bunnyAdopt = require("@components/bunny-adopt");
 const authUser = require("@middleware/auth-user");
 const authAdmin = require("@middleware/auth-admin");
 const hashResponse = require("@services/hash-response");
@@ -61,18 +61,6 @@ router.get(
 );
 
 router.get(
-    "/adopt/:bunnyid",
-    authUser,
-    asyncHandler(async (req, res) => {
-        const result = await bunnyAdopt(req);
-        hashResponse(res, req, {
-            status: result ? "success" : "failure",
-            data: result,
-        });
-    })
-);
-
-router.get(
     "/getleft",
     authUser,
     asyncHandler(async (req, res) => {
@@ -101,6 +89,30 @@ router.get(
     authUser,
     asyncHandler(async (req, res) => {
         const result = await bunnyOwnedList(req);
+        hashResponse(res, req, {
+            status: result ? "success" : "failure",
+            data: result,
+        });
+    })
+);
+
+router.get(
+    "/newlist",
+    authUser,
+    asyncHandler(async (req, res) => {
+        const result = await bunnyNewList(req);
+        hashResponse(res, req, {
+            status: result ? "success" : "failure",
+            data: result,
+        });
+    })
+);
+
+router.get(
+    "/newlist/:pageCount",
+    authUser,
+    asyncHandler(async (req, res) => {
+        const result = await bunnyNewList(req);
         hashResponse(res, req, {
             status: result ? "success" : "failure",
             data: result,

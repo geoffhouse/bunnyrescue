@@ -27,7 +27,6 @@ export default function AddUser({ isSaving = false, user, onSave }) {
 
     React.useEffect(() => {
         // check if email address is taken
-        // const checkEmail = emails.filter((email) => email.email === localUser.email && email.id !== localUser.id);
         const checkEmail = emails.filter((email) => email.email === localUser.email);
         setEmailTaken(checkEmail.length > 0);
     }, [emails, localUser]);

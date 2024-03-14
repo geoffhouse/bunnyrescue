@@ -8,9 +8,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Loading from "./Loading";
 import TimeAgo from "timeago-react";
-import { Link } from "react-router-dom";
-import Fab from "@mui/material/Fab";
-import AddIcon from "@mui/icons-material/Add";
 import { useApiPoller } from "../services/ApiPoller";
 import { useHistory } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
@@ -82,20 +79,6 @@ export default function ListBunnies({ times }) {
                         </TableHead>
                     </Table>
                 </TableContainer>
-                <Link to="/admin/addbunny">
-                    <Fab
-                        size="medium"
-                        color="primary"
-                        aria-label="add"
-                        sx={{
-                            position: "fixed",
-                            bottom: "64px",
-                            right: "16px",
-                        }}
-                    >
-                        <AddIcon />
-                    </Fab>
-                </Link>
             </>
         );
     }
@@ -199,22 +182,6 @@ export default function ListBunnies({ times }) {
                     </TableBody>
                 </Table>
             </TableContainer>
-            {times.ended ? null : (
-                <Link to="/admin/addbunny">
-                    <Fab
-                        size="medium"
-                        color="primary"
-                        aria-label="add"
-                        sx={{
-                            position: "fixed",
-                            bottom: "64px",
-                            right: "16px",
-                        }}
-                    >
-                        <AddIcon />
-                    </Fab>
-                </Link>
-            )}
         </>
     );
 }

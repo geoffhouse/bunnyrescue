@@ -94,6 +94,7 @@ export default function PageFind({ times }) {
     // added - all ok - next stage
     // retry - error - reload page button
     // notstarted
+    // unknown - it's an unregistered bunny - suggest adoption
     // ended
 
     //TESTED OK
@@ -175,7 +176,7 @@ export default function PageFind({ times }) {
         );
     }
 
-    if (status === "unassigned") {
+    if (status === "unknown") {
         return (
             <Page>
                 <Box
@@ -199,13 +200,6 @@ export default function PageFind({ times }) {
                         </Button>
                     </BunnyLink>
                 </Action>
-
-                {!bunny.enabled && (
-                    <Box sx={{ marginTop: "1rem", textAlign: "center", fontSize: "16px", margin: "1rem" }}>
-                        <p>Psst ... it's also currently disabled!</p>
-                        <p>Once you've adopted it, you'll be able to edit it and change the name and location.</p>
-                    </Box>
-                )}
             </Page>
         );
     }

@@ -1,8 +1,6 @@
 "use strict";
 
 const Logger = require("@services/logger");
-const en = require("nanoid-good/locale/en");
-const nanoid = require("nanoid-good").nanoid(en);
 const UserGetCurrent = require("@components/user-getcurrent");
 const Notifications = require("@services/notifications");
 const mongoCollection = require("@services/mongo-collection");
@@ -10,7 +8,6 @@ const mongoCollection = require("@services/mongo-collection");
 module.exports = async (req) => {
     try {
         const params = req.body;
-        const id = nanoid(8);
         const user = await UserGetCurrent(req);
         if (!user) {
             Logger.error("bunny-add: somehow there's no cookie set for user id?!");
@@ -20,6 +17,11 @@ module.exports = async (req) => {
         if (!!params.userid && user._id != params.userid) {
             Logger.error(`bunny-add: user id ${user._id} can't create a bunny for a different user (${params.userid})`);
             return false;
+        }
+
+        if (!params._id) {
+            Logger.error("bunny-add: no bunny id passed");
+            return null;
         }
 
         if (!params.name) {
@@ -53,7 +55,6 @@ module.exports = async (req) => {
         }
 
         // add values to params
-        params["_id"] = id;
         params["userid"] = user._id;
         params["created"] = Date.now();
         params["lastchanged"] = Date.now();
@@ -64,15 +65,15 @@ module.exports = async (req) => {
         const bunniesCollection = await mongoCollection("bunnies");
         const results = await bunniesCollection?.insertOne(params);
 
-        Logger.debug(`new bunny ${id} results: ` + JSON.stringify(results));
+        Logger.debug(`new bunny ${params._id} results: ` + JSON.stringify(results));
 
         if (results.result !== null && results.result.ok === 1) {
             new Notifications().send(
-                `Created bunny: '${params.name}', message: '${params.message ? params.message : ""}', user: '${
-                    user.name
-                }'`
+                `Created bunny: id: '${params._id}', name: '${params.name}', message: '${
+                    params.message ? params.message : ""
+                }', user: '${user.name}'`
             );
-            return id;
+            return true;
         }
         return false;
     } catch (error) {

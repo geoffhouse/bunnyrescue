@@ -9,9 +9,6 @@ import Paper from "@mui/material/Paper";
 import Loading from "./Loading";
 import TimeAgo from "timeago-react";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { Link } from "react-router-dom";
-import Fab from "@mui/material/Fab";
-import AddIcon from "@mui/icons-material/Add";
 import { useApiPoller } from "../services/ApiPoller";
 import { useHistory } from "react-router-dom";
 
@@ -43,20 +40,6 @@ export default function ListBunnies({ times }) {
                         </TableHead>
                     </Table>
                 </TableContainer>
-                <Link to="/addbunny">
-                    <Fab
-                        size="medium"
-                        color="primary"
-                        aria-label="add"
-                        sx={{
-                            position: "fixed",
-                            bottom: "64px",
-                            right: "16px",
-                        }}
-                    >
-                        <AddIcon />
-                    </Fab>
-                </Link>
             </>
         );
     }
@@ -127,22 +110,6 @@ export default function ListBunnies({ times }) {
                     </TableBody>
                 </Table>
             </TableContainer>
-            {times.ended ? null : (
-                <Link to="/addbunny">
-                    <Fab
-                        size="medium"
-                        color="primary"
-                        aria-label="add"
-                        sx={{
-                            position: "fixed",
-                            bottom: "64px",
-                            right: "16px",
-                        }}
-                    >
-                        <AddIcon />
-                    </Fab>
-                </Link>
-            )}
         </>
     );
 }

@@ -170,10 +170,10 @@ export default function Home({ times, serverprize }) {
                 </>
             );
         }
-        if (leader === null) {
+        if (leader.data === null) {
             return "There are no users on the leaderboard. Quick - you can be the first";
         }
-        if (leader.data.name === user.data.name) {
+        if (leader?.data?.name === user?.data?.name) {
             if (user.data.found.length === 0) {
                 return (
                     <>
@@ -418,19 +418,6 @@ export default function Home({ times, serverprize }) {
                         </GridItem>
                     </Slide>
                 )}
-                {user?.data?.isAdmin || times.ended || times.endssoon ? null : (
-                    <Slide in={true} direction="right">
-                        <GridItem item xs={12}>
-                            <HomeLink to="/addbunny">
-                                <HomeCard
-                                    title="Hide a Bunny"
-                                    subtitle="Create and print out a special QR code so others can rescue your bunny!"
-                                    icon={CropFreeIcon}
-                                ></HomeCard>
-                            </HomeLink>
-                        </GridItem>
-                    </Slide>
-                )}
                 <Slide in={true} direction="right">
                     <GridItem item xs={12}>
                         <HomeLink to="/leaderboard">
@@ -456,10 +443,10 @@ export default function Home({ times, serverprize }) {
                 {user?.data?.isAdmin && (
                     <Slide in={true} direction="right">
                         <GridItem item xs={12}>
-                            <HomeLink to="/admin/addbunny">
+                            <HomeLink to="/admin/bunny/printnew">
                                 <HomeCard
-                                    title="Hide a Bunny"
-                                    subtitle="Add a bunny to any user account"
+                                    title="Print new bunnies"
+                                    subtitle="Create a printable page of brand new bunnies"
                                     icon={CropFreeIcon}
                                     isAdmin
                                 ></HomeCard>

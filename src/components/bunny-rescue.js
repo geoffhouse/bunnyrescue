@@ -15,10 +15,13 @@ module.exports = async (req) => {
         const bunniesCollection = await mongoCollection("bunnies");
         const bunny = await bunniesCollection?.findOne({ _id: bunnyId });
         if (!bunny) {
-            new Notifications().send(`${user.name} failed to rescue bunny id: '${bunnyId}'`);
+            // new for 2024 - scanning an unknown bunny allows you to adopt it
+            new Notifications().send(`${user.name} scanned an unassigned bunny: '${bunnyId}'`);
             return {
-                status: "failed",
-                bunny: null,
+                status: "unknown",
+                bunny: {
+                    _id: bunnyId,
+                },
             };
         }
 
@@ -28,14 +31,6 @@ module.exports = async (req) => {
             new Notifications().send(`${user.name} scanned their own bunny '${bunny.name}'`);
             return {
                 status: "owned",
-                bunny: bunny,
-            };
-        }
-
-        if (bunny["userid"] === "unassigned") {
-            new Notifications().send(`${user.name} scanned an unassigned bunny: '${bunny.name}'`);
-            return {
-                status: "unassigned",
                 bunny: bunny,
             };
         }

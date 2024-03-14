@@ -10,13 +10,13 @@ To start with, you'll need to set this up on your own server. We recommend Digit
 
 You'll need to decide start and end dates, and communicate this to your users. Give them plenty of warning to sign up.
 
-Usually you'll want to charge people a nominal fee to enter (and that bit's entirely up to you!). Peoples' email addresses are added to the system and they're ready to go.They'll get an email with a link for them to log in.
+Usually you'll want to charge people a nominal fee to enter (and that bit's entirely up to you!). Peoples' email addresses are added to the system and they're ready to go. They'll get an email with a link for them to log in.
 
 Before the start date, you'll need to print out a load of Bunnies (QR codes) and place them around your neighbourhood. You can do this yourself, or delegate to a team. The number of bunnies you want to place is entirely up to you - we generally hide 100-200 for 70 or 80 users.
 
 People click on the link in their email, and choose a team name. Once logged in they can view a map of available bunnies, a list of which bunnies they've found, and a leaderboard showing all registered teams.
 
-In their own time they then set off to find the bunnies. When they find one they scan it with a mobile phone (either in the app or using their own camera app) and log them as found. Each bunny can have a colour and an optional message which appears when scanned.
+Once the event starts, in their own time they set off to find the bunnies. When they find one they scan it with a mobile phone (either in the app or using their own camera app) and log them as found. Each bunny can have a colour and an optional message which appears when scanned. There's no prizes for being the quickest - just for rescuing the most bunnies!
 
 You can choose the level at which people win a small prize (by default 10) and then award larger prizes to the top finders. It's entirely up to you.
 
@@ -26,6 +26,7 @@ You can choose the level at which people win a small prize (by default 10) and t
 -   You'll need a lot of small prizes! If you're a charity, have a word with local supermarkets to see if they'll donate, otherwise you'll need to buy some!
 -   Choose your prices carefully. Make sure it's not too cheap, but not so expensive that people expect a significant prize. We tend to charge a few pounds per child, with discounts for multiple children.
 -   We recommend cutting each QR code out separately and laminating it around the edge. Otherwise it leaks and is unreadable.
+-   You'll want a few admins to share the workload. They won't be able to find bunnies using their own account, but they can always set up a user account
 
 ## How it works
 
@@ -73,6 +74,8 @@ You'll need:
 
 -   git
 -   docker engine: https://docs.docker.com/engine/install/
+
+## Install bunny rescue app
 
 Copy the following docker-compose.yml into a suitable folder (maybe `/opt/bunnyrescue`):
 
@@ -126,3 +129,47 @@ services:
         ports:
             - 27017:27017
 ```
+
+Start up the app:
+
+```
+docker compose up -d
+```
+
+## Setup domain name
+
+You'll need to use HTTPS to access this app. It's a good idea anyway, but it's the only way to be allowed to access the camera on a web browser.
+
+Use your domain name to point an A record to your droplet IP address.
+
+## Add NGINX proxy
+
+This uses certbot to request an HTTPS certificate and forward all requests to the bunnyrescue app.
+
+Clone this repository (maybe in `/opt`):
+
+```
+git clone https://github.com/wmnnd/nginx-certbot.git
+```
+
+Edit `nginx-certbot/init-letsencrypt.sh` and change domains and email addresses to suit.
+
+Then edit `data/nginx/app.conf` and change domain names and the `proxy_pass` line to:
+
+```
+proxy_pass  http://YOURDOMAINNAMEHERE:3000;
+```
+
+Annoyingly this script needs `docker-compose` rather than the new `docker compose` (which you'll already have). Just install it anyway:
+
+```
+sudo apt install docker-compose
+```
+
+Lastly run the init script to fetch the certificate and run NGINX:
+
+```
+./init-letsencrypt.sh
+```
+
+Log in with your admin email address and start creating other users.

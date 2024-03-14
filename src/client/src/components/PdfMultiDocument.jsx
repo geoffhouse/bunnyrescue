@@ -1,19 +1,21 @@
 import React from "react";
 import { Document, Page, Text, View, Image, StyleSheet } from "@react-pdf/renderer";
 
-export default function PdfDocument({ bunnies }) {
+export default function PdfMultiDocument({ bunnies }) {
     const styles = StyleSheet.create({
         page: {
             backgroundColor: "#ffffff",
         },
-        bunnyText: {
+        bunnyYear: {
             position: "absolute",
-            fontSize: 8,
-            left: "40px",
-            top: "260px",
-            color: "#444",
+            fontSize: 20,
+            left: "45px",
+            top: "30px",
+            color: "#888",
+            fontWeight: 900,
             width: "200px",
             textAlign: "center",
+            zIndex: 1001,
         },
         qrcodeSmall: {
             position: "absolute",
@@ -35,6 +37,8 @@ export default function PdfDocument({ bunnies }) {
         const returnBunnies = [];
         let row = 0;
         let col = 0;
+        let date = new Date();
+        let year = date.getFullYear();
         for (let bunnyIndex = firstIndex; bunnyIndex < lastIndex; bunnyIndex++) {
             if (col === 2) {
                 col = 0;
@@ -57,7 +61,7 @@ export default function PdfDocument({ bunnies }) {
                             <Image src={bunnies[bunnyIndex].qrCode} />
                         </View>
                         <View>
-                            <Text style={styles.bunnyText}>Bunny name: {bunnies[bunnyIndex].name}</Text>
+                            <Text style={styles.bunnyYear}>{year}</Text>
                         </View>
                     </View>
                 );

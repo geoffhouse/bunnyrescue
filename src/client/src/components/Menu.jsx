@@ -8,7 +8,6 @@ import ListItemText from "@mui/material/ListItemText";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import SearchIcon from "@mui/icons-material/Search";
 import HomeIcon from "@mui/icons-material/Home";
-import CropFreeIcon from "@mui/icons-material/CropFree";
 import PinDropIcon from "@mui/icons-material/PinDrop";
 import LockIcon from "@mui/icons-material/Lock";
 import HelpIcon from "@mui/icons-material/Help";
@@ -40,19 +39,6 @@ export default function Menu({ open = false, onClose, times }) {
                         <SearchIcon />
                     </ListItemIcon>
                     <ListItemText primary="Rescue a Bunny" />
-                </ListItem>
-                <ListItem
-                    button
-                    component={Link}
-                    to="/addbunny"
-                    sx={{
-                        display: times?.ended ? "none" : "flex",
-                    }}
-                >
-                    <ListItemIcon>
-                        <CropFreeIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Hide a Bunny" />
                 </ListItem>
                 <ListItem button component={Link} to="/bunnies">
                     <ListItemIcon>
