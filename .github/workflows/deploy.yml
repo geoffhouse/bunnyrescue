@@ -1,4 +1,4 @@
-name: Publish Emu app to docker registry
+name: Publish bunnyrescue app to docker registry
 
 env:
     registry: "ghcr.io"
