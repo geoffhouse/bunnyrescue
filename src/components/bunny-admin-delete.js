@@ -4,14 +4,14 @@ const Logger = require("@services/logger");
 const mongoCollection = require("@services/mongo-collection");
 const Notifications = require("@services/notifications");
 const userGetCurrent = require("@components/user-getcurrent");
-const bunnyGet = require("@components/bunny-get");
+const bunnyAdminGet = require("@components/bunny-adminget");
 
 module.exports = async (req) => {
     try {
         const bunnyId = req.params.bunnyid;
         Logger.info(`bunny-admin-delete: deleting bunny id ${bunnyId} from db`);
 
-        const bunny = await bunnyGet(req); // eugh
+        const bunny = await bunnyAdminGet(); // eugh
         const user = await userGetCurrent(req);
 
         if (!bunny) {
