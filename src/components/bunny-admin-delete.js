@@ -11,7 +11,7 @@ module.exports = async (req) => {
         const bunnyId = req.params.bunnyid;
         Logger.info(`bunny-admin-delete: deleting bunny id ${bunnyId} from db`);
 
-        const bunny = await bunnyAdminGet(); // eugh
+        const bunny = await bunnyAdminGet(req); // eugh
         const user = await userGetCurrent(req);
 
         if (!bunny) {
