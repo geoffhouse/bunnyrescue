@@ -4,7 +4,7 @@ const Logger = require("@services/logger");
 const mongoCollection = require("@services/mongo-collection");
 const Notifications = require("@services/notifications");
 const userGetCurrent = require("@components/user-getcurrent");
-const bunnyAdminGet = require("@components/bunny-adminget");
+const bunnyAdminGet = require("@components/bunny-admin-get");
 
 module.exports = async (req) => {
     try {
