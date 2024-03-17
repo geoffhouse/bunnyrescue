@@ -9,6 +9,7 @@ import PageScanBunny from "./PageScanBunny";
 import PageAdminAddUser from "./PageAdminAddUser";
 import PageAdminEditUser from "./PageAdminEditUser";
 import PageAdminListUsers from "./PageAdminListUsers";
+import PageSwitchUser from "./PageSwitchUser";
 import PagePrintAll from "./PagePrintAll";
 import PagePrintNew from "./PagePrintNew";
 import PagePrivacy from "./PagePrivacy";
@@ -314,7 +315,7 @@ export default function App() {
                                 </Route>
                             )}
                             <Route exact path="/:email">
-                                <PageHome
+                                <PageSwitchUser
                                     user={user}
                                     servername={server.servername}
                                     serverprize={server.serverprize}
