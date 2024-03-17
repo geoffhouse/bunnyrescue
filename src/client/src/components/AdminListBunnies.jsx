@@ -5,6 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Loading from "./Loading";
 import TimeAgo from "timeago-react";
@@ -18,11 +19,13 @@ import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 import FetchGet from "../services/FetchGet";
 import { useForceRefresh } from "./ForceRefresh";
 import ItemMenu from "./ItemMenu";
+import { useTheme } from "@mui/material/styles";
 
 export default function ListBunnies({ times }) {
     const history = useHistory();
     const { confirmDialog } = useConfirmDialog();
     const [forceRefresh, doForceRefresh] = useForceRefresh();
+    const theme = useTheme();
 
     const bunnies = useApiPoller({
         url: `/api/bunny/admin/list/`,
@@ -82,6 +85,7 @@ export default function ListBunnies({ times }) {
             </>
         );
     }
+
     return (
         <>
             <TableContainer>
@@ -95,18 +99,10 @@ export default function ListBunnies({ times }) {
                                     "@media (max-width:250px)": {
                                         display: "none",
                                     },
+                                    whiteSpace: "nowrap",
                                 }}
                             >
-                                Found
-                            </TableCell>
-                            <TableCell
-                                sx={{
-                                    "@media (max-width:350px)": {
-                                        display: "none",
-                                    },
-                                }}
-                            >
-                                Created
+                                Last Found
                             </TableCell>
                             <TableCell></TableCell>
                         </TableRow>
@@ -124,7 +120,20 @@ export default function ListBunnies({ times }) {
                                 key={bunny._id}
                                 onClick={() => handleRowClicked(bunny._id)}
                             >
-                                <TableCell>{bunny.name}</TableCell>
+                                <TableCell>
+                                    {bunny.name}
+                                    {bunny.missing && (
+                                        <Box
+                                            sx={{
+                                                whiteSpace: "nowrap",
+                                                fontWeight: 900,
+                                                color: theme.palette.primary.main,
+                                            }}
+                                        >
+                                            (marked missing)
+                                        </Box>
+                                    )}
+                                </TableCell>
                                 <TableCell>{bunny.user}</TableCell>
                                 <TableCell
                                     sx={{
@@ -134,16 +143,13 @@ export default function ListBunnies({ times }) {
                                     }}
                                     width="30"
                                 >
-                                    {bunny.finds}
-                                </TableCell>
-                                <TableCell
-                                    sx={{
-                                        "@media (max-width:350px)": {
-                                            display: "none",
-                                        },
-                                    }}
-                                >
-                                    <TimeAgo datetime={bunny.created} />
+                                    {bunny.lastfound ? (
+                                        <Box sx={{ whiteSpace: "nowrap" }}>
+                                            <TimeAgo datetime={bunny.lastfound} />
+                                        </Box>
+                                    ) : (
+                                        "Never"
+                                    )}
                                 </TableCell>
                                 <TableCell sx={{ width: "1rem", opacity: "1 !important" }}>
                                     <ItemMenu

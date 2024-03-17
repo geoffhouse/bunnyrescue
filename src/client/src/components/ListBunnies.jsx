@@ -11,9 +11,12 @@ import TimeAgo from "timeago-react";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { useApiPoller } from "../services/ApiPoller";
 import { useHistory } from "react-router-dom";
+import { useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
 
 export default function ListBunnies({ times }) {
     const history = useHistory();
+    const theme = useTheme();
 
     const bunnies = useApiPoller({
         url: `/api/bunny/ownedlist/`,
@@ -57,7 +60,7 @@ export default function ListBunnies({ times }) {
                                     },
                                 }}
                             >
-                                Found
+                                Finds
                             </TableCell>
                             <TableCell
                                 sx={{
@@ -66,7 +69,7 @@ export default function ListBunnies({ times }) {
                                     },
                                 }}
                             >
-                                Created
+                                Last Found
                             </TableCell>
                             <TableCell></TableCell>
                         </TableRow>
@@ -82,7 +85,20 @@ export default function ListBunnies({ times }) {
                                 key={bunny._id}
                                 onClick={() => handleRowClicked(bunny._id)}
                             >
-                                <TableCell>{bunny.name}</TableCell>
+                                <TableCell>
+                                    {bunny.name}
+                                    {bunny.missing && (
+                                        <Box
+                                            sx={{
+                                                whiteSpace: "nowrap",
+                                                fontWeight: 900,
+                                                color: theme.palette.primary.main,
+                                            }}
+                                        >
+                                            (marked missing)
+                                        </Box>
+                                    )}
+                                </TableCell>
                                 <TableCell
                                     sx={{
                                         "@media (max-width:250px)": {
@@ -100,7 +116,13 @@ export default function ListBunnies({ times }) {
                                         },
                                     }}
                                 >
-                                    <TimeAgo datetime={bunny.created} />
+                                    {bunny.lastfound ? (
+                                        <Box sx={{ whiteSpace: "nowrap" }}>
+                                            <TimeAgo datetime={bunny.lastfound} />
+                                        </Box>
+                                    ) : (
+                                        "Never"
+                                    )}
                                 </TableCell>
                                 <TableCell sx={{ width: "1rem" }}>
                                     <ChevronRightIcon style={{ opacity: 0.5 }} />

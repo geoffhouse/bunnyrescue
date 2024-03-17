@@ -10,6 +10,20 @@ const theme = createTheme({
                 },
             },
         },
+        MuiMenuItem: {
+            styleOverrides: {
+                root: {
+                    minHeight: "42px",
+                },
+            },
+        },
+        MuiListItemText: {
+            styleOverrides: {
+                primary: {
+                    fontSize: "0.9rem",
+                },
+            },
+        },
     },
     palette: {
         primary: { main: "#a80a10" },

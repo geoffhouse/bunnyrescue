@@ -18,6 +18,8 @@ const bunnyDisable = require("@components/bunny-disable");
 const bunnyAdminDisable = require("@components/bunny-admin-disable");
 const bunnyAdminEnable = require("@components/bunny-admin-enable");
 const bunnyAdminDelete = require("@components/bunny-admin-delete");
+const bunnySetMissing = require("@components/bunny-set-missing");
+const bunnyAdminSetAvailable = require("@components/bunny-admin-set-available");
 const bunnyRescue = require("@components/bunny-rescue");
 const authUser = require("@middleware/auth-user");
 const authAdmin = require("@middleware/auth-admin");
@@ -197,6 +199,31 @@ router.get(
     authUser,
     asyncHandler(async (req, res) => {
         const result = await bunnyDisable(req);
+        hashResponse(res, req, {
+            status: result ? "success" : "failure",
+            data: result,
+        });
+    })
+);
+
+// anyone can mark a bunny missing
+router.get(
+    "/setmissing/:bunnyid",
+    authUser,
+    asyncHandler(async (req, res) => {
+        const result = await bunnySetMissing(req);
+        hashResponse(res, req, {
+            status: result ? "success" : "failure",
+            data: result,
+        });
+    })
+);
+
+router.get(
+    "/admin/setavailable/:bunnyid",
+    authAdmin,
+    asyncHandler(async (req, res) => {
+        const result = await bunnyAdminSetAvailable(req);
         hashResponse(res, req, {
             status: result ? "success" : "failure",
             data: result,

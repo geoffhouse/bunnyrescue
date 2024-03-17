@@ -19,6 +19,9 @@ module.exports = async (req) => {
             colour: "natural",
             created: Date.now(),
             lastchanged: Date.now(),
+            lastfound: null,
+            lastfoundby: null,
+            missing: false,
             enabled: true,
             finds: 0,
         });

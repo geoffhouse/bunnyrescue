@@ -16,23 +16,20 @@ module.exports = async (req) => {
     }
     const user = await UserGetCurrent(req);
 
-    // replace IDs with random ones & set owner flag
     const filteredBunnies = [];
     for (const i in bunnies) {
         if (bunnies[i]["enabled"]) {
+            const userName = indexedUsers[bunnies[i]["userid"]] ?? "";
             bunnies[i]["found"] = user.found.includes(bunnies[i]["_id"].toString());
-            bunnies[i]["helpertext"] = "";
-            if (!user.isAdmin) {
-                bunnies[i]["_id"] = md5(bunnies[i]["_id"]);
-            } else {
-                const userName = indexedUsers[bunnies[i]["userid"]] ?? "";
-                bunnies[i]["helpertext"] = `id: ${bunnies[i]["_id"]}, owner: ${userName}, name: ${bunnies[i]["name"]}`;
-            }
+            bunnies[i]["owner"] = userName;
             bunnies[i]["owned"] = bunnies[i]["userid"] === user["_id"];
+            if (!user.isAdmin && !bunnies[i]["owned"]) {
+                // we obscure the id in case a hacker parent wants a shortcut to 'find' all the bunnies ...
+                bunnies[i]["_id"] = md5(bunnies[i]["_id"]);
+            }
             delete bunnies[i]["created"];
             delete bunnies[i]["lastchanged"];
             delete bunnies[i]["userid"];
-            delete bunnies[i]["colour"];
             filteredBunnies.push(bunnies[i]);
         }
     }

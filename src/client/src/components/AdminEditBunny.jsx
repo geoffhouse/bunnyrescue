@@ -11,9 +11,11 @@ import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import MenuItem from "@mui/material/MenuItem";
 import FetchGet from "../services/FetchGet";
+import TimeAgo from "timeago-react";
 
 const StyledP = styled("p")(() => ({
     marginTop: "32px",
+    marginBottom: "4px",
     color: "#606060",
 }));
 
@@ -42,8 +44,12 @@ export default function AdminEditBunny({ isSaving = false, bunny, onSave, colour
         setLocalBunny({ ...localBunny, name: event.target.value });
     };
 
-    const handleSwitchChanged = (event) => {
+    const handleEnabledChanged = (event) => {
         setLocalBunny({ ...localBunny, enabled: event.target.checked });
+    };
+
+    const handleMissingChanged = (event) => {
+        setLocalBunny({ ...localBunny, missing: event.target.checked });
     };
 
     const handleMapChanged = (latlng) => {
@@ -96,11 +102,48 @@ export default function AdminEditBunny({ isSaving = false, bunny, onSave, colour
                 </StyledP>
                 <FormGroup row>
                     <FormControlLabel
-                        control={<Switch checked={localBunny.enabled} onChange={handleSwitchChanged} color="primary" />}
+                        control={
+                            <Switch checked={localBunny.enabled} onChange={handleEnabledChanged} color="primary" />
+                        }
                         label="Enabled"
                     />
                 </FormGroup>
+
+                <StyledP>Marking this bunny as missing warns people there might be problems.</StyledP>
+                <FormGroup row>
+                    <FormControlLabel
+                        control={
+                            <Switch checked={localBunny.missing} onChange={handleMissingChanged} color="primary" />
+                        }
+                        label="Missing"
+                    />
+                </FormGroup>
             </form>
+
+            <StyledP>Created</StyledP>
+            <Box
+                sx={{
+                    border: "1px solid rgba(0, 0, 0, 0.25)",
+                    padding: "12px",
+                    borderRadius: "5px",
+                    color: "#666",
+                }}
+            >
+                <TimeAgo datetime={bunny.created} />
+            </Box>
+
+            <StyledP>Last Found</StyledP>
+            <Box
+                sx={{
+                    border: "1px solid rgba(0, 0, 0, 0.25)",
+                    padding: "12px",
+                    borderRadius: "5px",
+                    color: "#666",
+                }}
+            >
+                <TimeAgo datetime={bunny.lastfound} />
+                {bunny.lastfoundby && <> by {bunny.lastfoundby}</>}
+            </Box>
 
             <StyledP>Change the colour of your bunny:</StyledP>
 

@@ -4,6 +4,7 @@ const Logger = require("@services/logger");
 const UserGetCurrent = require("@components/user-getcurrent");
 const Notifications = require("@services/notifications");
 const mongoCollection = require("@services/mongo-collection");
+const md5 = require("md5");
 
 module.exports = async (req) => {
     try {
@@ -58,7 +59,11 @@ module.exports = async (req) => {
         params["userid"] = user._id;
         params["created"] = Date.now();
         params["lastchanged"] = Date.now();
+        params["lastfound"] = null;
+        params["lastfoundby"] = null;
+        params["missing"] = false;
         params["enabled"] = true;
+        params["hashedid"] = md5(params["_id"]);
 
         Logger.info("saving new bunny to db: " + JSON.stringify(params));
 

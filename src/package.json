@@ -1,6 +1,6 @@
 {
     "name": "bunnyrescue",
-    "version": "2.1.1",
+    "version": "2.2.0",
     "description": "Bunny Rescue",
     "scripts": {
         "production": "node bin/server-prod",

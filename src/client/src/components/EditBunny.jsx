@@ -9,9 +9,11 @@ import ColourPicker from "./ColourPicker";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
+import TimeAgo from "timeago-react";
 
 const StyledP = styled("p")(({ theme }) => ({
     marginTop: "32px",
+    marginBottom: "4px",
     color: "#606060",
 }));
 
@@ -22,8 +24,12 @@ export default function EditBunny({ serverurl, isSaving = false, bunny, onSave, 
         setLocalBunny({ ...localBunny, name: event.target.value });
     };
 
-    const handleSwitchChanged = (event) => {
+    const handleEnabledChanged = (event) => {
         setLocalBunny({ ...localBunny, enabled: event.target.checked });
+    };
+
+    const handleMissingChanged = (event) => {
+        setLocalBunny({ ...localBunny, missing: event.target.checked });
     };
 
     const handleMapChanged = (latlng) => {
@@ -41,7 +47,7 @@ export default function EditBunny({ serverurl, isSaving = false, bunny, onSave, 
     return (
         <>
             <form noValidate autoComplete="off">
-                <StyledP>The name of your bunny:</StyledP>
+                <StyledP sx={{ marginTop: "12px" }}>The name of your bunny:</StyledP>
                 <TextField
                     fullWidth
                     variant="filled"
@@ -56,11 +62,35 @@ export default function EditBunny({ serverurl, isSaving = false, bunny, onSave, 
                 </StyledP>
                 <FormGroup row>
                     <FormControlLabel
-                        control={<Switch checked={localBunny.enabled} onChange={handleSwitchChanged} color="primary" />}
+                        control={
+                            <Switch checked={localBunny.enabled} onChange={handleEnabledChanged} color="primary" />
+                        }
                         label="Enabled"
                     />
                 </FormGroup>
+                <StyledP>Marking this bunny as missing warns people there might be problems.</StyledP>
+                <FormGroup row>
+                    <FormControlLabel
+                        control={
+                            <Switch checked={localBunny.missing} onChange={handleMissingChanged} color="primary" />
+                        }
+                        label="Missing"
+                    />
+                </FormGroup>
             </form>
+
+            <StyledP>Last Found</StyledP>
+            <Box
+                sx={{
+                    border: "1px solid rgba(0, 0, 0, 0.25)",
+                    padding: "12px",
+                    borderRadius: "5px",
+                    color: "#666",
+                }}
+            >
+                <TimeAgo datetime={bunny.lastfound} />
+                {bunny.lastfoundby && <> by {bunny.lastfoundby}</>}
+            </Box>
 
             <StyledP>Change the colour of your bunny:</StyledP>
 

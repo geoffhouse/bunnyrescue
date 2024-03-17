@@ -70,6 +70,9 @@ export default function ItemMenu({ item, menuItems }) {
                     if (menuItem.title === "-") {
                         return <Divider key={index} />;
                     } else {
+                        if (!menuItem) {
+                            return null;
+                        }
                         return (
                             <MenuItem
                                 onClick={(event) => handleMenuItemClicked(event, menuItem)}
