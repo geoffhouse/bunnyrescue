@@ -26,18 +26,30 @@ import { useConfirmDialog } from "./ConfirmDialog";
 import { useTheme } from "@mui/material/styles";
 import PeopleIcon from "@mui/icons-material/People";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import Modal from "@mui/material/Modal";
+import Typography from "@mui/material/Typography";
+import { useSnackbar } from "notistack";
+import FetchPost from "../services/FetchPost";
 
 export default function Map({ serverlocation, user }) {
     const map = React.useRef();
     const [geoPosition, setGeoPosition] = React.useState();
+    const [dialogVisible, setDialogVisible] = React.useState(false);
     const history = useHistory();
     const [forceRefresh, doForceRefresh] = useForceRefresh();
     const { confirmDialog } = useConfirmDialog();
     const theme = useTheme();
+    const { enqueueSnackbar } = useSnackbar();
 
     React.useEffect(() => {
         navigator.geolocation.getCurrentPosition(handleGotLocation);
     }, []);
+
+    React.useEffect(() => {
+        if (!user.popupMapShown) {
+            setDialogVisible(true);
+        }
+    }, [user]);
 
     const handleGotLocation = (position) => {
         setGeoPosition(position);
@@ -133,6 +145,24 @@ export default function Map({ serverlocation, user }) {
         doForceRefresh();
     };
 
+    const closeDialog = async () => {
+        const url = `/api/user/update/${user._id}`;
+        try {
+            const result = await FetchPost(url, {
+                popupMapShown: true,
+            });
+            if (!result.data) {
+                throw new Error();
+            }
+            setDialogVisible(false);
+        } catch (error) {
+            enqueueSnackbar("Failed to update user. Please try again", {
+                variant: "error",
+            });
+            console.error(error);
+        }
+    };
+
     if (bunnies.status !== "success") {
         return <Loading sx={{ marginTop: "2rem" }} />;
     }
@@ -152,6 +182,38 @@ export default function Map({ serverlocation, user }) {
                 },
             }}
         >
+            <Modal
+                sx={{
+                    zIndex: 2001,
+                }}
+                open={dialogVisible}
+                onClose={closeDialog}
+            >
+                <Box
+                    sx={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        width: 400,
+                        bgcolor: "background.paper",
+                        border: "none",
+                        outline: 0,
+                        borderRadius: "5px",
+                        p: 4,
+                        zIndex: 10530,
+                        padding: "24px",
+                    }}
+                >
+                    <Typography variant="h6" sx={{ marginBottom: "12px" }}>
+                        Did you know?
+                    </Typography>
+                    <p>You can now click on map markers for more information or to mark a bunny missing</p>
+                    <Button color="primary" variant="contained" onClick={closeDialog}>
+                        OK
+                    </Button>
+                </Box>
+            </Modal>
             <ContentWrapper>
                 <MapContainer
                     whenCreated={(mapInstance) => {
