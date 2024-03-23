@@ -191,6 +191,13 @@ export default function Home({ times, serverprize }) {
                 </>
             );
         }
+        if (!leader.data.found) {
+            return (
+                <>
+                    <div>No-one has found any bunnies yes. Come on!</div>
+                </>
+            );
+        }
         return (
             <>
                 <div>
