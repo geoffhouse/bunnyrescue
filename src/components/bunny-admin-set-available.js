@@ -36,7 +36,9 @@ module.exports = async (req) => {
         );
 
         if (results.result !== null && results.result.ok === 1) {
-            new Notifications().send(`${user?.name} set bunny '${bunny?.name}' as available, id ${bunny?._id}`);
+            const bunnyLink = `<${process.env.SERVER_URL}/admin/bunny/${bunny?._id}|${bunny?.name}>`;
+            const userLink = `<${process.env.SERVER_URL}/admin/user/${user._id}|${user.name}> (${user.email})`;
+            new Notifications().send(`${userLink} set bunny ${bunnyLink} as available`);
             return true;
         }
         return false;

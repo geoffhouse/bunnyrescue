@@ -36,7 +36,11 @@ module.exports = async (req) => {
         Logger.debug(`user-admin-disable: disabled user id ${req.params.userid}, results: ` + JSON.stringify(results));
 
         if (results.result !== null && results.result.ok === 1) {
-            new Notifications().send(`User ${currentUser.name} disabled user ${user.name}`);
+            const currentUuserLink = `<${process.env.SERVER_URL}/admin/user/${currentUser._id}|${currentUser.name}> (${currentUser.email})`;
+            const userLink = `<${process.env.SERVER_URL}/admin/user/${user._id}|${
+                user.name ? user.name : user.email
+            }> ${user.name && `(${user.email})`}`;
+            new Notifications().send(`${currentUuserLink} disabled user ${userLink}`);
             return true;
         }
         return false;

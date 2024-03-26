@@ -27,8 +27,12 @@ module.exports = async (req, user) => {
 
     Logger.debug(`user-addbrowser: user ${userIdentifier} result: ${JSON.stringify(result)}`);
 
+    const userLink = `<${process.env.SERVER_URL}/admin/user/${user._id}|${user.name ? user.name : user.email}> ${
+        user.name && `(${user.email})`
+    }`;
+
     new Notifications().send(
-        `${userIdentifier} registered a new browser: ${req.useragent.browser} ${req.useragent.version} on ${req.useragent.platform}`
+        `${userLink} registered a new browser: ${req.useragent.browser} ${req.useragent.version} on ${req.useragent.platform}`
     );
 
     return result;

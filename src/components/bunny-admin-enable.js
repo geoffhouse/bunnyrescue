@@ -33,7 +33,9 @@ module.exports = async (req) => {
         Logger.debug(`bunny-admin-enable: enabled bunny id ${bunnyId}, results: ` + JSON.stringify(results));
 
         if (results.result !== null && results.result.ok === 1) {
-            new Notifications().send(`${user?.name} enabled bunny '${bunny?.name}', id ${bunny?._id}`);
+            const bunnyLink = `<${process.env.SERVER_URL}/admin/bunny/${bunny?._id}|${bunny?.name}>`;
+            const userLink = `<${process.env.SERVER_URL}/admin/user/${user._id}|${user.name}> (${user.email})`;
+            new Notifications().send(`${userLink} enabled bunny ${bunnyLink}`);
             return true;
         }
         return false;

@@ -30,7 +30,10 @@ module.exports = async (req) => {
         Logger.debug(`updated user ${userid} results: ${JSON.stringify(results)}`);
 
         if (results.result !== null && results.result.ok === 1) {
-            new Notifications().send(`${user.name ? user.name : user.email} updated their user details`);
+            const userLink = `<${process.env.SERVER_URL}/admin/user/${user._id}|${
+                user.name ? user.name : user.email
+            }> ${user.name && `(${user.email})`}`;
+            new Notifications().send(`${userLink} updated their user details`);
             return true;
         }
         return false;

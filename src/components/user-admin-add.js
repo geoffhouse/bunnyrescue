@@ -45,11 +45,11 @@ module.exports = async (req) => {
         Logger.info("user-admin-add: saving new user to db: " + JSON.stringify(params));
         const results = await usersCollection?.insertOne(params);
         Logger.debug(`user-admin-add: new user ${id} results: ` + JSON.stringify(results));
+
         if (results.result !== null && results.result.ok === 1) {
+            const userLink = `<${process.env.SERVER_URL}/admin/user/${currentUser._id}|${currentUser.name}> (${currentUser.email})`;
             new Notifications().send(
-                `${currentUser?.name} created user: ${params.name ? `'${params.name}', ` : ""}email: '${
-                    params.email
-                }', id: '${id}'`
+                `${userLink} created user ${params.name ? `'${params.name}', ` : ""}with email ${params.email}`
             );
             return id;
         }

@@ -25,7 +25,8 @@ module.exports = async (req) => {
         Logger.debug(`bunny-admin-delete: deleted bunny ${bunnyId} results: ${JSON.stringify(results)}`);
 
         if (results.result !== null && results.result.ok === 1) {
-            new Notifications().send(`${user?.name} deleted bunny '${bunny?.name}', id ${bunny?._id}`);
+            const userLink = `<${process.env.SERVER_URL}/admin/user/${user._id}|${user.name}> (${user.email})`;
+            new Notifications().send(`${userLink} deleted bunny '${bunny?.name}', id ${bunny?._id}`);
             return true;
         }
         return false;

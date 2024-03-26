@@ -14,9 +14,10 @@ module.exports = async (req) => {
 
         const bunniesCollection = await mongoCollection("bunnies");
         const bunny = await bunniesCollection?.findOne({ _id: bunnyId });
+        const userLink = `<${process.env.SERVER_URL}/admin/user/${user._id}|${user.name}> (${user.email})`;
         if (!bunny) {
             // new for 2024 - scanning an unknown bunny allows you to adopt it
-            new Notifications().send(`${user.name} scanned an unassigned bunny: '${bunnyId}'`);
+            new Notifications().send(`${userLink} scanned an unassigned bunny with id '${bunnyId}'`);
             return {
                 status: "unknown",
                 bunny: {
@@ -38,10 +39,12 @@ module.exports = async (req) => {
         );
         Logger.debug(`bunny-rescue: set bunny id ${bunnyId} as found, results: ${JSON.stringify(missingResults)}`);
 
+        const bunnyLink = `<${process.env.SERVER_URL}/admin/bunny/${bunny?._id}|${bunny?.name}>`;
+
         // if bunny belongs to current user, then we can't count it! Cheeky.
         // don't worry - the UI lets them edit it
         if (bunny["userid"] === user["_id"]) {
-            new Notifications().send(`${user.name} scanned their own bunny '${bunny.name}'`);
+            new Notifications().send(`${userLink} scanned their own bunny ${bunnyLink}`);
             return {
                 status: "owned",
                 bunny: bunny,
@@ -49,7 +52,7 @@ module.exports = async (req) => {
         }
 
         if (user.isAdmin) {
-            new Notifications().send(`${user.name} scanned bunny '${bunny.name}' as an admin`);
+            new Notifications().send(`${userLink} scanned bunny ${bunnyLink} as an admin`);
             return {
                 status: "admin",
                 bunny: bunny,
@@ -58,7 +61,7 @@ module.exports = async (req) => {
 
         // has the game ended? We check this first
         if (serverDetails.endTime < Date.now()) {
-            new Notifications().send(`${user.name} tried to find bunny '${bunny.name}' after the game has ended`);
+            new Notifications().send(`${userLink} tried to find bunny ${bunnyLink} after the game has ended`);
             return {
                 status: "ended",
                 bunny: bunny,
@@ -67,7 +70,7 @@ module.exports = async (req) => {
 
         // now - has the game started yet? If not then we can't let them find it.
         if (serverDetails.startTime > Date.now()) {
-            new Notifications().send(`${user.name} tried to find bunny '${bunny.name}' before the game starts`);
+            new Notifications().send(`${userLink} tried to find bunny ${bunnyLink} before the game starts`);
             return {
                 status: "notstarted",
                 bunny: bunny,
@@ -76,7 +79,7 @@ module.exports = async (req) => {
 
         // check to see if they've already found it
         if (user.found.includes(bunnyId)) {
-            new Notifications().send(`${user.name} tried to find bunny '${bunny.name}' again`);
+            new Notifications().send(`${userLink} tried to find bunny ${bunnyLink} again`);
             return {
                 status: "duplicate",
                 bunny: bunny,
@@ -130,7 +133,7 @@ module.exports = async (req) => {
         }
 
         // all done
-        new Notifications().send(`${user.name} found bunny: '${bunny.name}'`);
+        new Notifications().send(`${userLink} found bunny ${bunnyLink}`);
         return {
             status: "added",
             bunny: bunny,

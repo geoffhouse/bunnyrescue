@@ -73,10 +73,10 @@ module.exports = async (req) => {
         Logger.debug(`new bunny ${params._id} results: ` + JSON.stringify(results));
 
         if (results.result !== null && results.result.ok === 1) {
+            const bunnyLink = `<${process.env.SERVER_URL}/admin/bunny/${params._id}|${params.name}>`;
+            const userLink = `<${process.env.SERVER_URL}/admin/user/${user._id}|${user.name}> (${user.email})`;
             new Notifications().send(
-                `Created bunny: id: '${params._id}', name: '${params.name}', message: '${
-                    params.message ? params.message : ""
-                }', user: '${user.name}'`
+                `${userLink} created a bunny: ${bunnyLink} with message: '${params.message ?? ""}'`
             );
             return true;
         }

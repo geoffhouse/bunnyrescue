@@ -63,7 +63,9 @@ module.exports = async (req) => {
         Logger.debug(`bunny-update: updated bunny id ${params._id} results: ${JSON.stringify(results)}`);
 
         if (results.result !== null && results.result.ok === 1) {
-            new Notifications().send(`${user.name} updated bunny: '${params.name}'`);
+            const bunnyLink = `<${process.env.SERVER_URL}/admin/bunny/${params?._id}|${params?.name}>`;
+            const userLink = `<${process.env.SERVER_URL}/admin/user/${user._id}|${user.name}> (${user.email})`;
+            new Notifications().send(`${userLink} updated bunny ${bunnyLink}`);
             return true;
         }
         return false;

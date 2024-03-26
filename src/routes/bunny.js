@@ -158,17 +158,17 @@ router.post(
     })
 );
 
-router.post(
-    "/admin/add/",
-    authAdmin,
-    asyncHandler(async (req, res) => {
-        const result = await bunnyAdminAdd(req);
-        hashResponse(res, req, {
-            status: result ? "success" : "failure",
-            data: result,
-        });
-    })
-);
+// router.post(
+//     "/admin/add/",
+//     authAdmin,
+//     asyncHandler(async (req, res) => {
+//         const result = await bunnyAdminAdd(req);
+//         hashResponse(res, req, {
+//             status: result ? "success" : "failure",
+//             data: result,
+//         });
+//     })
+// );
 
 router.post(
     "/update/",
@@ -194,17 +194,17 @@ router.post(
     })
 );
 
-router.get(
-    "/disable/:bunnyid",
-    authUser,
-    asyncHandler(async (req, res) => {
-        const result = await bunnyDisable(req);
-        hashResponse(res, req, {
-            status: result ? "success" : "failure",
-            data: result,
-        });
-    })
-);
+// router.get(
+//     "/disable/:bunnyid",
+//     authUser,
+//     asyncHandler(async (req, res) => {
+//         const result = await bunnyDisable(req);
+//         hashResponse(res, req, {
+//             status: result ? "success" : "failure",
+//             data: result,
+//         });
+//     })
+// );
 
 // anyone can mark a bunny missing
 router.get(
