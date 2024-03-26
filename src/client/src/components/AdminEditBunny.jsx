@@ -141,8 +141,14 @@ export default function AdminEditBunny({ isSaving = false, bunny, onSave, colour
                     color: "#666",
                 }}
             >
-                <TimeAgo datetime={bunny.lastfound} />
-                {bunny.lastfoundby && <> by {bunny.lastfoundby}</>}
+                {bunny.lastfound ? (
+                    <>
+                        <TimeAgo datetime={bunny.lastfound} />
+                        {bunny.lastfoundby && <> by {bunny.lastfoundby}</>}
+                    </>
+                ) : (
+                    "Never"
+                )}
             </Box>
 
             <StyledP>Change the colour of your bunny:</StyledP>
