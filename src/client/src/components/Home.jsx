@@ -57,7 +57,6 @@ const GameEnds = styled(Typography)(({ theme }) => ({
 
 export default function Home({ times, serverprize }) {
     const theme = createTheme();
-
     const leader = useApiPoller({
         url: `/api/bunny/getleader/`,
         interval: 10000,
@@ -191,7 +190,7 @@ export default function Home({ times, serverprize }) {
                 </>
             );
         }
-        if (!leader.data.found) {
+        if (!leader.data?.totalfound === 0) {
             return (
                 <>
                     <div>No-one has found any bunnies yes. Come on!</div>
